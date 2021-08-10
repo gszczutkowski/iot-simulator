@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-public class IotPublisherCreator implements TopicSetter, MessageSetter {
+public class IotPublisherCreator implements PubTopicSetter, PubMessageSetter {
     private final AWSIotMqttClient iotMqttClient;
     private Map<String, List<String>> topicsWithMessages;
 
@@ -18,7 +18,7 @@ public class IotPublisherCreator implements TopicSetter, MessageSetter {
         topicsWithMessages = new HashMap<>();
     }
 
-    public MessageSetter topic(String topic) {
+    public PubMessageSetter topic(String topic) {
         topicsWithMessages.put(topic, new ArrayList<>());
         log.info("Set publishing topic to {}", topic);
         return this;
