@@ -3,10 +3,10 @@ package com.testcraftsmanship.iotsimulator.publisher;
 
 import com.amazonaws.services.iot.client.AWSIotException;
 import com.amazonaws.services.iot.client.AWSIotMqttClient;
-import lombok.AllArgsConstructor;
+import com.testcraftsmanship.iotsimulator.device.IotDevice;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-
+import org.json.JSONObject;
 
 import java.util.List;
 import java.util.Map;
@@ -15,28 +15,16 @@ import java.util.Optional;
 import static com.amazonaws.services.iot.client.AWSIotConnectionStatus.CONNECTED;
 
 @Slf4j
-@AllArgsConstructor
-public class IotPublisher {
-    private final AWSIotMqttClient iotMqttClient;
+public class IotPublisher extends IotDevice<IotPublisher> {
     private final Map<String, List<String>> topicsWithMessages;
 
-    public IotPublisher start() {
-        try {
-            iotMqttClient.connect();
-            log.info("IoT simulator started");
-        } catch (AWSIotException e) {
-            log.warn("Exception thrown while starting IoT simulator");
-        }
-        return this;
+    public IotPublisher(AWSIotMqttClient iotMqttClient, Map<String, List<String>> topicsWithMessages) {
+        super(iotMqttClient);
+        this.topicsWithMessages = topicsWithMessages;
     }
 
-    public IotPublisher stop() {
-        try {
-            iotMqttClient.disconnect();
-            log.info("IoT simulator stopped");
-        } catch (AWSIotException e) {
-            log.warn("Exception thrown while stopping IoT simulator");
-        }
+    @Override
+    protected IotPublisher getThis() {
         return this;
     }
 
@@ -83,7 +71,8 @@ public class IotPublisher {
 
     private void publishIotMessage(@NonNull IotEvent message) {
         try {
-            iotMqttClient.publish(message.getTopic(), message.getMessage());
+            String payload = new JSONObject(message.getMessage()).toString();
+            getIotMqttClient().publish(message.getTopic(), payload);
             log.info("Published message {} to topic {}", message.getMessage(), message.getTopic());
         } catch (AWSIotException e) {
             throw new IllegalStateException("Unable to publish message " + message.getMessage()
@@ -92,7 +81,7 @@ public class IotPublisher {
     }
 
     private void startIotSimulatorWhenDisconnected() {
-        if (!CONNECTED.equals(iotMqttClient.getConnectionStatus())) {
+        if (!CONNECTED.equals(getIotMqttClient().getConnectionStatus())) {
             start();
         }
     }

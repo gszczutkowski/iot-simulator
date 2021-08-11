@@ -5,7 +5,9 @@ import com.amazonaws.services.iot.client.auth.Credentials;
 import com.amazonaws.services.iot.client.auth.StaticCredentialsProvider;
 import com.amazonaws.services.iot.client.sample.sampleUtil.SampleUtil;
 import com.testcraftsmanship.iotsimulator.publisher.IotPublisherCreator;
-import com.testcraftsmanship.iotsimulator.publisher.TopicSetter;
+import com.testcraftsmanship.iotsimulator.publisher.PubTopicSetter;
+import com.testcraftsmanship.iotsimulator.subscriber.IotSubscriberCreator;
+import com.testcraftsmanship.iotsimulator.subscriber.SubscriberSetter;
 
 import java.security.KeyStore;
 
@@ -30,8 +32,11 @@ public class IotSimulator {
         iotMqttClient = new AWSIotMqttClient(clientEndpoint, clientId, keyStore, keyPassword);
     }
 
-    public TopicSetter publisher() {
+    public PubTopicSetter publisher() {
         return new IotPublisherCreator(iotMqttClient);
     }
 
+    public SubscriberSetter subscriber() {
+        return new IotSubscriberCreator(iotMqttClient);
+    }
 }
