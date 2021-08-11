@@ -1,4 +1,4 @@
-package com.testcraftsmanship.iotsimulator.device;
+package com.testcraftsmanship.iotsimulator.iottype.generic;
 
 import com.amazonaws.services.iot.client.AWSIotException;
 import com.amazonaws.services.iot.client.AWSIotMqttClient;

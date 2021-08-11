@@ -1,9 +1,10 @@
-package com.testcraftsmanship.iotsimulator.publisher;
+package com.testcraftsmanship.iotsimulator.iottype.publisher;
 
 
 import com.amazonaws.services.iot.client.AWSIotException;
 import com.amazonaws.services.iot.client.AWSIotMqttClient;
-import com.testcraftsmanship.iotsimulator.device.IotDevice;
+import com.testcraftsmanship.iotsimulator.item.IotEvent;
+import com.testcraftsmanship.iotsimulator.iottype.generic.IotDevice;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;

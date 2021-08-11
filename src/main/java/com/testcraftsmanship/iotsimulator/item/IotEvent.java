@@ -1,11 +1,11 @@
-package com.testcraftsmanship.iotsimulator.publisher;
+package com.testcraftsmanship.iotsimulator.item;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-class IotEvent {
+public class IotEvent {
     private String topic;
     private String message;
 }

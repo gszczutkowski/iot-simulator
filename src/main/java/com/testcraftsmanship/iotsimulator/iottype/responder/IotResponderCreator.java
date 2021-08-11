@@ -1,4 +1,4 @@
-package com.testcraftsmanship.iotsimulator.receiver;
+package com.testcraftsmanship.iotsimulator.iottype.responder;
 
 import com.amazonaws.services.iot.client.AWSIotMqttClient;
 

@@ -1,8 +1,8 @@
-package com.testcraftsmanship.iotsimulator.subscriber;
+package com.testcraftsmanship.iotsimulator.iottype.subscriber;
 
 import com.amazonaws.services.iot.client.AWSIotException;
 import com.amazonaws.services.iot.client.AWSIotMqttClient;
-import com.testcraftsmanship.iotsimulator.device.IotDevice;
+import com.testcraftsmanship.iotsimulator.iottype.generic.IotDevice;
 import com.testcraftsmanship.iotsimulator.exception.IotConfigurationException;
 
 import java.time.Instant;

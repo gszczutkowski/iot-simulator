@@ -4,12 +4,12 @@ import com.amazonaws.services.iot.client.AWSIotMqttClient;
 import com.amazonaws.services.iot.client.auth.Credentials;
 import com.amazonaws.services.iot.client.auth.StaticCredentialsProvider;
 import com.amazonaws.services.iot.client.sample.sampleUtil.SampleUtil;
-import com.testcraftsmanship.iotsimulator.publisher.IotPublisherCreator;
-import com.testcraftsmanship.iotsimulator.publisher.PubTopicSetter;
-import com.testcraftsmanship.iotsimulator.receiver.IotResponderCreator;
-import com.testcraftsmanship.iotsimulator.receiver.StateSelector;
-import com.testcraftsmanship.iotsimulator.subscriber.IotSubscriberCreator;
-import com.testcraftsmanship.iotsimulator.subscriber.SubscriberSetter;
+import com.testcraftsmanship.iotsimulator.iottype.publisher.IotPublisherCreator;
+import com.testcraftsmanship.iotsimulator.iottype.publisher.PubTopicSetter;
+import com.testcraftsmanship.iotsimulator.iottype.responder.IotResponderCreator;
+import com.testcraftsmanship.iotsimulator.iottype.responder.StateSelector;
+import com.testcraftsmanship.iotsimulator.iottype.subscriber.IotSubscriberCreator;
+import com.testcraftsmanship.iotsimulator.iottype.subscriber.SubscriberSetter;
 
 import java.security.KeyStore;
 

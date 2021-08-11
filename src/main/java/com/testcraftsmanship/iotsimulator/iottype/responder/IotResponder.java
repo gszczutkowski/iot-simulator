@@ -1,8 +1,8 @@
-package com.testcraftsmanship.iotsimulator.receiver;
+package com.testcraftsmanship.iotsimulator.iottype.responder;
 
 import com.amazonaws.services.iot.client.AWSIotMqttClient;
-import com.testcraftsmanship.iotsimulator.data.SubscriptionData;
-import com.testcraftsmanship.iotsimulator.device.IotDevice;
+import com.testcraftsmanship.iotsimulator.item.SubscriptionData;
+import com.testcraftsmanship.iotsimulator.iottype.generic.IotDevice;
 
 import java.util.List;
 import java.util.Map;

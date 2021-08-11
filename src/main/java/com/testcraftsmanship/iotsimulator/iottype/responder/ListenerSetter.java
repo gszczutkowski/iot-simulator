@@ -1,4 +1,4 @@
-package com.testcraftsmanship.iotsimulator.receiver;
+package com.testcraftsmanship.iotsimulator.iottype.responder;
 
 public interface ListenerSetter {
     ListenerSetter topicIs(String topic);

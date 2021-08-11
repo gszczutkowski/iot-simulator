@@ -1,4 +1,4 @@
-package com.testcraftsmanship.iotsimulator.subscriber;
+package com.testcraftsmanship.iotsimulator.iottype.subscriber;
 
 
 

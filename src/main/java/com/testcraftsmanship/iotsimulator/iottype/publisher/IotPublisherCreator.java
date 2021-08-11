@@ -1,4 +1,4 @@
-package com.testcraftsmanship.iotsimulator.publisher;
+package com.testcraftsmanship.iotsimulator.iottype.publisher;
 
 import com.amazonaws.services.iot.client.AWSIotMqttClient;
 import lombok.extern.slf4j.Slf4j;

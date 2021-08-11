@@ -1,4 +1,4 @@
-package com.testcraftsmanship.iotsimulator.receiver;
+package com.testcraftsmanship.iotsimulator.iottype.responder;
 
 import java.util.List;
 

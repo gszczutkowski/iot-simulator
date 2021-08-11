@@ -1,4 +1,4 @@
-package com.testcraftsmanship.iotsimulator.subscriber;
+package com.testcraftsmanship.iotsimulator.iottype.subscriber;
 
 import com.amazonaws.services.iot.client.AWSIotMqttClient;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +11,7 @@ public class IotSubscriberCreator implements SubscriberSetter {
         this.iotMqttClient = iotMqttClient;
     }
 
+    @Override
     public IotSubscriber topic(String topic) {
         log.info("Set subscriber to listen on topic {}", topic);
         return new IotSubscriber(iotMqttClient, topic);
