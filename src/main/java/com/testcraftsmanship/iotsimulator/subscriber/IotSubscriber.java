@@ -45,10 +45,11 @@ public class IotSubscriber extends IotDevice<IotSubscriber> {
         return subscribedTopic.popPublishedMessage().isPresent();
     }
 
-    public List<String> allMatchingMessages(){
+    public List<String> allMatchingMessages() {
         return subscribedTopic.allPublishedMessages();
     }
 
+    @Override
     public IotSubscriber start() {
         super.start();
         try {
