@@ -27,7 +27,7 @@
         <dependency.check.plugin.version>2.0.4</dependency.check.plugin.version>
         <checkstyle.plugin.version>3.0.0</checkstyle.plugin.version>
         <pmd.plugin.version>3.13.0</pmd.plugin.version>
-        <jxr.plugin.version>3.0.0</jxr.plugin.version>
+        <jxr.plugin.version>3.1.1</jxr.plugin.version>
     </properties>
 
     <build>
@@ -113,6 +113,16 @@
             </plugin>
         </plugins>
     </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>${jxr.plugin.version}</version>
+            </plugin>
+        </plugins>
+    </reporting>
 
     <dependencies>
         <dependency>

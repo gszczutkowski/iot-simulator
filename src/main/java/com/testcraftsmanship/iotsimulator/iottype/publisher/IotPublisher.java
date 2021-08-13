@@ -3,7 +3,7 @@ package com.testcraftsmanship.iotsimulator.iottype.publisher;
 
 import com.amazonaws.services.iot.client.AWSIotException;
 import com.amazonaws.services.iot.client.AWSIotMqttClient;
-import com.testcraftsmanship.iotsimulator.item.IotEvent;
+import com.testcraftsmanship.iotsimulator.item.IotMessage;
 import com.testcraftsmanship.iotsimulator.iottype.generic.IotDevice;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,7 @@ public class IotPublisher extends IotDevice<IotPublisher> {
     }
 
     public IotPublisher publish() {
-        Optional<IotEvent> event = popMessageToPublish();
+        Optional<IotMessage> event = popMessageToPublish();
         if (event.isEmpty()) {
             log.info("There is no message to publish");
             return this;
@@ -42,7 +42,7 @@ public class IotPublisher extends IotDevice<IotPublisher> {
 
     public IotPublisher publishAll() {
         startIotSimulatorWhenDisconnected();
-        Optional<IotEvent> event = popMessageToPublish();
+        Optional<IotMessage> event = popMessageToPublish();
         while (event.isPresent()) {
             publishIotMessage(event.get());
             event = popMessageToPublish();
@@ -50,7 +50,7 @@ public class IotPublisher extends IotDevice<IotPublisher> {
         return this;
     }
 
-    private Optional<IotEvent> popMessageToPublish() {
+    private Optional<IotMessage> popMessageToPublish() {
         if (topicsWithMessages == null || topicsWithMessages.isEmpty()) {
             return Optional.empty();
         }
@@ -58,11 +58,11 @@ public class IotPublisher extends IotDevice<IotPublisher> {
         String topic = entry.getKey();
         List<String> messages = entry.getValue();
         if (messages.size() == 1) {
-            IotEvent result = new IotEvent(topic, messages.remove(0));
+            IotMessage result = new IotMessage(topic, messages.remove(0));
             topicsWithMessages.remove(topic);
             return Optional.of(result);
         } else if (messages.size() > 1) {
-            IotEvent result = new IotEvent(topic, messages.remove(0));
+            IotMessage result = new IotMessage(topic, messages.remove(0));
             return Optional.of(result);
         } else {
             topicsWithMessages.remove(topic);
@@ -70,7 +70,7 @@ public class IotPublisher extends IotDevice<IotPublisher> {
         }
     }
 
-    private void publishIotMessage(@NonNull IotEvent message) {
+    private void publishIotMessage(@NonNull IotMessage message) {
         try {
             String payload = new JSONObject(message.getMessage()).toString();
             getIotMqttClient().publish(message.getTopic(), payload);

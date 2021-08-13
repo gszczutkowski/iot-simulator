@@ -6,8 +6,8 @@ import org.json.JSONObject;
 
 import java.util.Map;
 
-import static com.testcraftsmanship.iotsimulator.data.ParserConstants.paramRegexWith;
-import static com.testcraftsmanship.iotsimulator.data.ParserConstants.paramWith;
+import static com.testcraftsmanship.iotsimulator.constant.ParserConstants.paramRegexWith;
+import static com.testcraftsmanship.iotsimulator.constant.ParserConstants.paramWith;
 
 @Slf4j
 public class JsonParamsUpdater {
@@ -36,7 +36,7 @@ public class JsonParamsUpdater {
                 throw new MappingException("Param {} does not have representative in json");
             }
         }
-        log.info("Updated json message: {}", payload);
+        log.debug("Updated json message: {}", payload);
         return new JSONObject(payload);
     }
 

@@ -23,6 +23,6 @@ public enum JsonValueType {
     }
 
     public boolean matches(Object object) {
-        return equals(parseJsonValueType(object));
+        return this.equals(parseJsonValueType(object));
     }
 }

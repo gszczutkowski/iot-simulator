@@ -11,8 +11,10 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import static com.testcraftsmanship.iotsimulator.constant.GeneralConstants.SUBSCRIBER_POLLING_VALUE_IN_SEC;
+
 public class IotSubscriber extends IotDevice<IotSubscriber> {
-    private static final int POLLING_VALUE_IN_SEC = 1;
+
     private final SubscribedTopic subscribedTopic;
 
     public IotSubscriber(AWSIotMqttClient iotMqttClient, String topic) {
@@ -33,7 +35,7 @@ public class IotSubscriber extends IotDevice<IotSubscriber> {
                 return message.get();
             }
             try {
-                TimeUnit.SECONDS.sleep(POLLING_VALUE_IN_SEC);
+                TimeUnit.SECONDS.sleep(SUBSCRIBER_POLLING_VALUE_IN_SEC);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }

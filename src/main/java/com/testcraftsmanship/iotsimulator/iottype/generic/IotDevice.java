@@ -15,9 +15,9 @@ public abstract class IotDevice<T extends IotDevice> {
     public T start() {
         try {
             iotMqttClient.connect();
-            log.info("IoT simulator started");
+            log.debug("IoT simulator started");
         } catch (AWSIotException e) {
-            log.warn("Exception thrown while starting IoT simulator");
+            log.error("Exception thrown while starting IoT simulator");
         }
         return getThis();
     }
@@ -25,9 +25,9 @@ public abstract class IotDevice<T extends IotDevice> {
     public T stop() {
         try {
             iotMqttClient.disconnect();
-            log.info("IoT simulator stopped");
+            log.debug("IoT simulator stopped");
         } catch (AWSIotException e) {
-            log.warn("Exception thrown while stopping IoT simulator");
+            log.error("Exception thrown while stopping IoT simulator");
         }
         return getThis();
     }

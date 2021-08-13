@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.testcraftsmanship.iotsimulator.data.JsonValueType.parseJsonValueType;
-import static com.testcraftsmanship.iotsimulator.data.ParserConstants.paramContentRegex;
+import static com.testcraftsmanship.iotsimulator.constant.ParserConstants.paramContentRegex;
 
 @Slf4j
 public class JsonParamsExtractor {
@@ -24,11 +24,11 @@ public class JsonParamsExtractor {
         if (jsonMessage == null || jsonMask == null) {
             throw new IllegalArgumentException("Arguments can not be null");
         }
-        log.info("Extracting values from json {} based on mask {} with strict set to {}",
+        log.debug("Extracting values from json {} based on mask {} with strict set to {}",
                 jsonMessage, jsonMask, strict);
         this.strictMatching = strict;
         this.jsonParamsWithValues = extractParamsValuesFromMessage(new JSONObject(jsonMessage), new JSONObject(jsonMask));
-        log.info("Extracted params: {}", jsonParamsWithValues);
+        log.debug("Extracted params: {}", jsonParamsWithValues);
     }
 
     public Map<String, String> getParamsWithValues() {

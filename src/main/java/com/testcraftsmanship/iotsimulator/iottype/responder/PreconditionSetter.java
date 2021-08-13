@@ -1,9 +1,8 @@
 package com.testcraftsmanship.iotsimulator.iottype.responder;
 
 public interface PreconditionSetter {
-    PreconditionSetter subscribedTopic(String topicWildcard);
-
+    PreconditionSetter subscribedTo(String topicWildcard);
     PreconditionSetter responseDelay(int delayInSec);
-
+    PreconditionSetter strictMatchingDisabled();
     ListenerSetter when();
 }
