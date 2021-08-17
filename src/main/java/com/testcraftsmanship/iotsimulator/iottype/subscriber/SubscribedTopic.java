@@ -1,4 +1,4 @@
-package com.testcraftsmanship.iotsimulator.subscriber;
+package com.testcraftsmanship.iotsimulator.iottype.subscriber;
 
 import com.amazonaws.services.iot.client.AWSIotMessage;
 import com.amazonaws.services.iot.client.AWSIotTopic;
@@ -33,6 +33,8 @@ public class SubscribedTopic extends AWSIotTopic {
         } else if (!isExpectedMaskSet()) {
             log.info("Subscriber received message {}, but no mask has been set", message.getStringPayload());
             actualMessages.add(message.getStringPayload());
+        } else {
+            log.debug("Message received by subscriber: {}", message.getStringPayload());
         }
     }
 
@@ -50,6 +52,7 @@ public class SubscribedTopic extends AWSIotTopic {
     private boolean isMessageMatchingTheMask(String message) {
         return jsonMatch(expectedMessageMask, message);
     }
+
     private boolean isExpectedMaskSet() {
         return !isNullOrEmpty(expectedMessageMask);
     }

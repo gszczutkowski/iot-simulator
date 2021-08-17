@@ -1,4 +1,4 @@
-package com.testcraftsmanship.iotsimulator.data;
+package com.testcraftsmanship.iotsimulator.constant;
 
 public final class ParserConstants {
     private ParserConstants() {

@@ -12,7 +12,7 @@ import java.util.Comparator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.testcraftsmanship.iotsimulator.data.ParserConstants.paramContentRegex;
+import static com.testcraftsmanship.iotsimulator.constant.ParserConstants.paramContentRegex;
 
 @Slf4j
 public final class JsonMessageMatcher {
@@ -21,7 +21,7 @@ public final class JsonMessageMatcher {
     }
 
     public static boolean jsonMatch(String json1, String json2) {
-        log.info("Comparing json {} with json {}", json1, json2);
+        log.debug("Comparing json {} with json {}", json1, json2);
         if (json1 == null || json2 == null) {
             throw new IllegalArgumentException("Arguments can not be null");
         }
