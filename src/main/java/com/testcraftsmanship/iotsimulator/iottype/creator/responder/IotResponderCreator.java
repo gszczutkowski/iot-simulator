@@ -1,8 +1,8 @@
-package com.testcraftsmanship.iotsimulator.iottype.responder;
+package com.testcraftsmanship.iotsimulator.iottype.creator.responder;
 
 import com.amazonaws.services.iot.client.AWSIotMqttClient;
-import com.testcraftsmanship.iotsimulator.item.IotMessage;
-import com.testcraftsmanship.iotsimulator.item.ResponderSettings;
+import com.testcraftsmanship.iotsimulator.iottype.responder.IotResponder;
+import com.testcraftsmanship.iotsimulator.item.IotDeviceSettings;
 import com.testcraftsmanship.iotsimulator.item.SubscriptionData;
 import lombok.extern.slf4j.Slf4j;
 
@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-public class IotResponderCreator implements StateSelector, PreconditionSetter, ListenerSetter, ResponderTopicSetter,
-        ResponderMsgSetter {
-    private final ResponderSettings settings = new ResponderSettings();
+public class IotResponderCreator implements ResStateSelector, ResPreconditionSetter, ResSubscriberSetter, ResTopicSetter,
+        ResMsgSetter {
+    private final IotDeviceSettings settings = new IotDeviceSettings();
     private final AWSIotMqttClient iotMqttClient;
     private SubscriptionData subscriptionData;
     private Map<String, List<String>> publishingTopicsWithMessages;
@@ -23,7 +23,7 @@ public class IotResponderCreator implements StateSelector, PreconditionSetter, L
     }
 
     @Override
-    public PreconditionSetter given() {
+    public ResPreconditionSetter given() {
         return this;
     }
 
@@ -50,55 +50,27 @@ public class IotResponderCreator implements StateSelector, PreconditionSetter, L
     }
 
     @Override
-    public ListenerSetter when() {
+    public ResSubscriberSetter when() {
         return this;
     }
 
     @Override
-    public IotResponderCreator topicIs(String topic) {
-        IotMessage iotMessage;
-        if (subscriptionData == null) {
-            subscriptionData = new SubscriptionData();
-        }
-        if (subscriptionData.getTopicWildcard() == null) {
-            log.debug("Set subscriber to listen on topic {}", topic);
-            subscriptionData.setTopicWildcard(topic);
-        }
-        if (subscriptionData.getIotMessage() == null) {
-            iotMessage = new IotMessage();
-        } else {
-            iotMessage = subscriptionData.getIotMessage();
-        }
-        log.debug("Set subscriber to listen for message with topic {}", topic);
-        iotMessage.setTopic(topic);
-        subscriptionData.setIotMessage(iotMessage);
+    public ResTopicSetter then() {
         return this;
     }
 
     @Override
-    public IotResponderCreator messageIs(String message) {
-        log.debug("Set subscriber to wait for message {}", message);
-        IotMessage iotMessage;
-        if (subscriptionData == null) {
-            subscriptionData = new SubscriptionData();
-        }
-        if (subscriptionData.getIotMessage() == null) {
-            iotMessage = new IotMessage();
-        } else {
-            iotMessage = subscriptionData.getIotMessage();
-        }
-        iotMessage.setMessage(message);
-        subscriptionData.setIotMessage(iotMessage);
-        return this;
+    public SubscriptionData getSubscriptionData() {
+        return null;
     }
 
     @Override
-    public IotResponderCreator then() {
-        return this;
+    public void setSubscriptionData(SubscriptionData subscriptionData) {
+
     }
 
     @Override
-    public ResponderMsgSetter publishingTo(String topic) {
+    public ResMsgSetter publishingTo(String topic) {
         publishingTopicsWithMessages.put(topic, new ArrayList<>());
         log.debug("Set publishing topic to {}", topic);
         return this;

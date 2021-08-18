@@ -7,7 +7,7 @@ import com.amazonaws.services.iot.client.AWSIotTopic;
 import com.testcraftsmanship.iotsimulator.data.JsonParamsExtractor;
 import com.testcraftsmanship.iotsimulator.data.JsonParamsUpdater;
 import com.testcraftsmanship.iotsimulator.exception.MappingException;
-import com.testcraftsmanship.iotsimulator.item.ResponderSettings;
+import com.testcraftsmanship.iotsimulator.item.IotDeviceSettings;
 import com.testcraftsmanship.iotsimulator.item.SubscriptionData;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -20,14 +20,14 @@ import static com.amazonaws.util.StringUtils.isNullOrEmpty;
 import static com.testcraftsmanship.iotsimulator.data.JsonMessageMatcher.jsonMatch;
 
 @Slf4j
-public class ResponderTopic extends AWSIotTopic {
+public class IotResponderTopic extends AWSIotTopic {
     private final AWSIotMqttClient responder;
-    private final ResponderSettings settings;
+    private final IotDeviceSettings settings;
     private final String expectedMessageMask;
     private final Map<String, List<String>> responseTopicsWithMessages;
 
-    public ResponderTopic(AWSIotMqttClient responder, SubscriptionData subscriptionData,
-                          Map<String, List<String>> responseTopicsWithMessages, ResponderSettings settings) {
+    public IotResponderTopic(AWSIotMqttClient responder, SubscriptionData subscriptionData,
+                             Map<String, List<String>> responseTopicsWithMessages, IotDeviceSettings settings) {
         super(subscriptionData.getIotMessage().getTopic());
         this.responder = responder;
         this.settings = settings;

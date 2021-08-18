@@ -2,6 +2,8 @@ package com.testcraftsmanship.iotsimulator.iottype.subscriber;
 
 import com.amazonaws.services.iot.client.AWSIotMessage;
 import com.amazonaws.services.iot.client.AWSIotTopic;
+import com.testcraftsmanship.iotsimulator.item.IotDeviceSettings;
+import com.testcraftsmanship.iotsimulator.item.SubscriptionData;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -13,16 +15,15 @@ import static com.testcraftsmanship.iotsimulator.data.JsonMessageMatcher.jsonMat
 
 @Slf4j
 public class SubscribedTopic extends AWSIotTopic {
-    private String expectedMessageMask;
+    private static final int FIRST_ITEM = 0;
     private final List<String> actualMessages = new ArrayList<>();
+    private final SubscriptionData subscriptionData;
+    private final IotDeviceSettings settings;
 
-    public SubscribedTopic(String topic) {
-        super(topic);
-    }
-
-    public SubscribedTopic(String topic, String messageMask) {
-        super(topic);
-        expectedMessageMask = messageMask;
+    public SubscribedTopic(SubscriptionData subscriptionData, IotDeviceSettings settings) {
+        super(subscriptionData.getIotMessage().getTopic());
+        this.subscriptionData = subscriptionData;
+        this.settings = settings;
     }
 
     @Override
@@ -42,7 +43,7 @@ public class SubscribedTopic extends AWSIotTopic {
         if (actualMessages.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.of(actualMessages.remove(0));
+        return Optional.of(actualMessages.remove(FIRST_ITEM));
     }
 
     public synchronized List<String> allPublishedMessages() {
@@ -50,10 +51,10 @@ public class SubscribedTopic extends AWSIotTopic {
     }
 
     private boolean isMessageMatchingTheMask(String message) {
-        return jsonMatch(expectedMessageMask, message);
+        return jsonMatch(subscriptionData.getIotMessage().getMessage(), message);
     }
 
     private boolean isExpectedMaskSet() {
-        return !isNullOrEmpty(expectedMessageMask);
+        return !isNullOrEmpty(subscriptionData.getIotMessage().getMessage());
     }
 }

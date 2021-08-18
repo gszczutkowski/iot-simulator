@@ -18,10 +18,12 @@ import static com.amazonaws.services.iot.client.AWSIotConnectionStatus.CONNECTED
 @Slf4j
 public class IotPublisher extends IotDevice<IotPublisher> {
     private final Map<String, List<String>> topicsWithMessages;
+    private int delayInSeconds;
 
-    public IotPublisher(AWSIotMqttClient iotMqttClient, Map<String, List<String>> topicsWithMessages) {
+    public IotPublisher(AWSIotMqttClient iotMqttClient, Map<String, List<String>> topicsWithMessages, int delayInSeconds) {
         super(iotMqttClient);
         this.topicsWithMessages = topicsWithMessages;
+        this.delayInSeconds = delayInSeconds;
     }
 
     @Override
