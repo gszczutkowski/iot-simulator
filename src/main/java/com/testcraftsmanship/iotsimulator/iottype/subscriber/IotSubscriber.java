@@ -4,6 +4,8 @@ import com.amazonaws.services.iot.client.AWSIotException;
 import com.amazonaws.services.iot.client.AWSIotMqttClient;
 import com.testcraftsmanship.iotsimulator.iottype.generic.IotDevice;
 import com.testcraftsmanship.iotsimulator.exception.IotConfigurationException;
+import com.testcraftsmanship.iotsimulator.item.IotDeviceSettings;
+import com.testcraftsmanship.iotsimulator.item.SubscriptionData;
 
 import java.time.Instant;
 import java.util.List;
@@ -14,17 +16,13 @@ import java.util.concurrent.TimeoutException;
 import static com.testcraftsmanship.iotsimulator.constant.GeneralConstants.SUBSCRIBER_POLLING_VALUE_IN_SEC;
 
 public class IotSubscriber extends IotDevice<IotSubscriber> {
-
     private final SubscribedTopic subscribedTopic;
+    private final IotDeviceSettings settings;
 
-    public IotSubscriber(AWSIotMqttClient iotMqttClient, String topic) {
+    public IotSubscriber(AWSIotMqttClient iotMqttClient, SubscriptionData subscriptionData, IotDeviceSettings settings) {
         super(iotMqttClient);
-        subscribedTopic = new SubscribedTopic(topic);
-    }
-
-    public IotSubscriber(AWSIotMqttClient iotMqttClient, String topic, String messageMask) {
-        super(iotMqttClient);
-        subscribedTopic = new SubscribedTopic(topic, messageMask);
+        this.subscribedTopic = new SubscribedTopic(subscriptionData, settings);
+        this.settings = settings;
     }
 
     public String waitForMatchingMessage(int timeoutInSeconds) throws TimeoutException {

@@ -1,4 +1,6 @@
-package com.testcraftsmanship.iotsimulator.iottype.publisher;
+package com.testcraftsmanship.iotsimulator.iottype.creator.publisher;
+
+import com.testcraftsmanship.iotsimulator.iottype.publisher.IotPublisher;
 
 import java.util.List;
 
