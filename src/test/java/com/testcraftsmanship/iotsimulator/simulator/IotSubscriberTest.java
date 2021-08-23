@@ -121,10 +121,8 @@ public class IotSubscriberTest extends BaseAwsTest implements SubscriberTestData
     @ParameterizedTest
     @MethodSource("oneOfAFewMatchingMessagesWithTopic")
     public void subscriberShouldGetAnyMatchingMessagesWhenOnlyOneMatchingMessagesWasSendToCorrectTopic(String topicWildcard,
-                                                                                                       String messageWildcard,
-                                                                                                       String pubTopic,
-                                                                                                       String pubMessage1,
-                                                                                                       String pubMessage2) {
+                                                                                String messageWildcard, String pubTopic,
+                                                                                String correctMessage, String wrongMessage) {
         subscriber = getSubscriber()
                 .given()
                     .subscribedTo(topicWildcard)
@@ -136,9 +134,9 @@ public class IotSubscriberTest extends BaseAwsTest implements SubscriberTestData
                     .anyMatch()
                 .start();
 
-        publishWithAwsClient(pubTopic, pubMessage1, pubMessage2);
+        publishWithAwsClient(pubTopic, correctMessage, wrongMessage);
 
-        assertThat(subscriber.allMatchingMessages()).isEqualTo(1);
+        assertThat(subscriber.allMatchingMessages()).isEqualTo(List.of(correctMessage));
         assertThat(subscriber.doesMatchingMessageReachedTheTopic()).isTrue();
     }
 

@@ -51,7 +51,7 @@ public class JsonParamsExtractorTest implements TestDataProvider {
     }
 
     @ParameterizedTest
-    @MethodSource("illegalJson")
+    @MethodSource("illegalJsonPair")
     public void shouldThrowJSONExceptionWhenIllegalJson(String json, String mask) {
         assertThrows(JSONException.class, () -> {
             new JsonParamsExtractor(json, mask, true);

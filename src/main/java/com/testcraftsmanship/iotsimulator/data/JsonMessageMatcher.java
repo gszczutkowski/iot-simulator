@@ -13,6 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.testcraftsmanship.iotsimulator.constant.ParserConstants.paramContentRegex;
+import static com.testcraftsmanship.iotsimulator.data.JsonStructureValidator.checkIfJsonHaveCorrectStructure;
 
 @Slf4j
 public final class JsonMessageMatcher {
@@ -25,6 +26,8 @@ public final class JsonMessageMatcher {
         if (json1 == null || json2 == null) {
             throw new IllegalArgumentException("Arguments can not be null");
         }
+        checkIfJsonHaveCorrectStructure(json1);
+        checkIfJsonHaveCorrectStructure(json2);
         ObjectMapper mapper = new ObjectMapper();
         try {
             JsonNode mappedJson1 = mapper.readTree(new JSONObject(json1).toString());
