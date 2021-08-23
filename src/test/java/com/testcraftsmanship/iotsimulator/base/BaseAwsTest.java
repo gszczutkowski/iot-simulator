@@ -16,11 +16,13 @@ import static com.testcraftsmanship.iotsimulator.base.Constant.*;
  */
 public class BaseAwsTest {
 
-    protected void publishWithAwsClient(String topic, String message) {
+    protected void publishWithAwsClient(String topic, String... messages) {
         AWSIotMqttClient mqttClient = getAWSIotMqttClient(TESTING_CLIENT_ID);
         try {
             mqttClient.connect();
-            mqttClient.publish(topic, message);
+            for (String message : messages) {
+                mqttClient.publish(topic, message);
+            }
             mqttClient.disconnect();
         } catch (AWSIotException e) {
             throw new IllegalStateException("Unable to publish message");

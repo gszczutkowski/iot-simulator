@@ -20,8 +20,8 @@ public class IotSubscriberTest extends BaseAwsTest implements SubscriberTestData
 
     @ParameterizedTest
     @MethodSource("strictMatchingMessagesWithTopic")
-    public void subscriberShouldGetTheMessageWithStrictWhenSendToCorrectTopic(String topicWildcard, String pubTopic,
-                                                                    String messageWildcard, String pubMessage) {
+    public void subscriberShouldGetTheMessageWithStrictWhenSendToCorrectTopic(String topicWildcard, String messageWildcard,
+                                                                              String pubTopic, String pubMessage) {
         subscriber = getSubscriber()
                 .given()
                     .subscribedTo(topicWildcard)
@@ -29,7 +29,7 @@ public class IotSubscriberTest extends BaseAwsTest implements SubscriberTestData
                     .topicIs(pubTopic)
                     .messageIs(messageWildcard)
                 .then()
-                .allMatch()
+                    .allMatch()
                 .start();
 
         publishWithAwsClient(pubTopic, pubMessage);
@@ -39,8 +39,8 @@ public class IotSubscriberTest extends BaseAwsTest implements SubscriberTestData
 
     @ParameterizedTest
     @MethodSource("strictNotMatchingMessagesWithTopic")
-    public void subscriberShouldNotGetTheNotMatchingMessageWithStrictWhenSendToCorrectTopic(String topicWildcard, String pubTopic,
-                                                                              String messageWildcard, String pubMessage) {
+    public void subscriberShouldNotGetTheNotMatchingMessageWithStrictWhenSendToCorrectTopic(String topicWildcard, String messageWildcard,
+                                                                                            String pubTopic, String pubMessage) {
         subscriber = getSubscriber()
                 .given()
                     .subscribedTo(topicWildcard)
@@ -57,9 +57,9 @@ public class IotSubscriberTest extends BaseAwsTest implements SubscriberTestData
     }
 
     @ParameterizedTest
-    @MethodSource("strictNotMatchingMessagesWithTopic")
-    public void subscriberShouldGetTheMatchingMessageWithStrictDisabledWhenSendToCorrectTopic(String topicWildcard, String pubTopic,
-                                                                                            String messageWildcard, String pubMessage) {
+    @MethodSource("strictDisabledMatchingMessagesWithTopic")
+    public void subscriberShouldGetTheMatchingMessageWithStrictDisabledWhenSendToCorrectTopic(String topicWildcard, String messageWildcard,
+                                                                                              String pubTopic, String pubMessage) {
         subscriber = getSubscriber()
                 .given()
                     .subscribedTo(topicWildcard)
@@ -76,9 +76,30 @@ public class IotSubscriberTest extends BaseAwsTest implements SubscriberTestData
         assertThat(subscriber.doesMatchingMessageReachedTheTopic()).isTrue();
     }
 
+
+    @ParameterizedTest
+    @MethodSource("strictDisabledNotMatchingMessagesWithTopic")
+    public void subscriberShouldNoGetTheMatchingMessageWithStrictDisabledWhenNoMatchingMessagesSend(String topicWildcard, String messageWildcard,
+                                                                                              String pubTopic, String pubMessage) {
+        subscriber = getSubscriber()
+                .given()
+                    .subscribedTo(topicWildcard)
+                    .strictMatchingDisabled()
+                .when()
+                    .topicIs(pubTopic)
+                    .messageIs(messageWildcard)
+                .then()
+                    .allMatch()
+                .start();
+
+        publishWithAwsClient(pubTopic, pubMessage);
+
+        assertThat(subscriber.doesMatchingMessageReachedTheTopic()).isFalse();
+    }
+
     @ParameterizedTest
     @MethodSource("allMatchingMessagesWithTopic")
-    public void subscriberShouldGetAllMatchingMessagesWhenSendToCorrectTopic(String topicWildcard, String messageWildcard,
+    public void subscriberShouldGetAllMatchingMessagesWithStrictDisabledWhenSendToCorrectTopic(String topicWildcard, String messageWildcard,
                                                                              String pubTopic, String pubMessage1,  String pubMessage2) {
         subscriber = getSubscriber()
                 .given()
@@ -91,17 +112,19 @@ public class IotSubscriberTest extends BaseAwsTest implements SubscriberTestData
                     .allMatch()
                 .start();
 
-        publishWithAwsClient(pubTopic, pubMessage1);
-        publishWithAwsClient(pubTopic, pubMessage2);
+        publishWithAwsClient(pubTopic, pubMessage1, pubMessage2);
 
         assertThat(subscriber.allMatchingMessages()).containsExactlyInAnyOrderElementsOf(List.of(pubMessage1, pubMessage2));
         assertThat(subscriber.doesMatchingMessageReachedTheTopic()).isTrue();
     }
 
     @ParameterizedTest
-    @MethodSource("anyMatchingMessagesWithTopic")
-    public void subscriberShouldGetAnyMatchingMessagesWhenSendToCorrectTopic(String topicWildcard, String messageWildcard,
-                                                                             String pubTopic, String pubMessage1,  String pubMessage2) {
+    @MethodSource("oneOfAFewMatchingMessagesWithTopic")
+    public void subscriberShouldGetAnyMatchingMessagesWhenOnlyOneMatchingMessagesWasSendToCorrectTopic(String topicWildcard,
+                                                                                                       String messageWildcard,
+                                                                                                       String pubTopic,
+                                                                                                       String pubMessage1,
+                                                                                                       String pubMessage2) {
         subscriber = getSubscriber()
                 .given()
                     .subscribedTo(topicWildcard)
@@ -113,30 +136,28 @@ public class IotSubscriberTest extends BaseAwsTest implements SubscriberTestData
                     .anyMatch()
                 .start();
 
-        publishWithAwsClient(pubTopic, pubMessage1);
-        publishWithAwsClient(pubTopic, pubMessage2);
+        publishWithAwsClient(pubTopic, pubMessage1, pubMessage2);
 
-        assertThat(subscriber.allMatchingMessages()).containsExactlyInAnyOrderElementsOf(List.of(pubMessage1, pubMessage2));
+        assertThat(subscriber.allMatchingMessages()).isEqualTo(1);
         assertThat(subscriber.doesMatchingMessageReachedTheTopic()).isTrue();
     }
 
     @ParameterizedTest
-    @MethodSource("anyMatchingMessagesWithTopic")
-    public void subscriberShouldNotGetAllWhenOnlyOneMatchingMessagesWhenSendToCorrectTopic(String topicWildcard, String messageWildcard,
+    @MethodSource("oneOfAFewMatchingMessagesWithTopic")
+    public void subscriberShouldNotGetAllWhenOnlyOneMatchingMessagesWasSendToCorrectTopic(String topicWildcard, String messageWildcard,
                                                                              String pubTopic, String pubMessage1,  String pubMessage2) {
         subscriber = getSubscriber()
                 .given()
-                .subscribedTo(topicWildcard)
-                .strictMatchingDisabled()
+                    .subscribedTo(topicWildcard)
+                    .strictMatchingDisabled()
                 .when()
-                .topicIs(pubTopic)
-                .messageIs(messageWildcard)
+                    .topicIs(pubTopic)
+                    .messageIs(messageWildcard)
                 .then()
-                .allMatch()
+                    .allMatch()
                 .start();
 
-        publishWithAwsClient(pubTopic, pubMessage1);
-        publishWithAwsClient(pubTopic, pubMessage2);
+        publishWithAwsClient(pubTopic, pubMessage1, pubMessage2);
 
         assertThat(subscriber.allMatchingMessages().size()).isEqualTo(1);
         assertThat(subscriber.doesMatchingMessageReachedTheTopic()).isFalse();
