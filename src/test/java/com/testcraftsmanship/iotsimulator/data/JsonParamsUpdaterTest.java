@@ -7,6 +7,7 @@ import com.testcraftsmanship.iotsimulator.utils.TestDataProvider;
 import com.testcraftsmanship.iotsimulator.exception.MappingException;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -17,6 +18,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class JsonParamsUpdaterTest implements TestDataProvider {
+    @Test
+    public void shouldThrowIllegalArgumentExceptionWhenJsonIsEmpty() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new JsonParamsUpdater("", new HashMap<>());
+        });
+    }
+
+    @Test
+    public void shouldThrowIllegalArgumentExceptionWhenJsonIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new JsonParamsUpdater(null, new HashMap<>());
+        });
+    }
+
     @ParameterizedTest
     @MethodSource("positiveParamsWithUpdatedJson")
     public void jsonWithParametrizedValuesShouldBeUpdated(Map<String, String> params,

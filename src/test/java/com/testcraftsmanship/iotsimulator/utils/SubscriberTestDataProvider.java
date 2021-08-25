@@ -23,8 +23,8 @@ public interface SubscriberTestDataProvider {
                         "myhome/#", "{'tmp': [10, 23]}",
                         "myhome/groundfloor/livingroom", "{'tmp': [10, 23]}"),
                 Arguments.of(
-                        "myhome/#", "{'tmp': [10, 23]}",
-                        "myhome/groundfloor/livingroom", "{'tmp': [23, 10]}")
+                        "myhome/#", "{'id': 'A5', 'tmp': [10, 23]}",
+                        "myhome/groundfloor/livingroom", "{'tmp': [10, 23], 'id': 'A5'}")
         );
     }
 

@@ -17,7 +17,7 @@ public class JsonMessageMatcherTest implements TestDataProvider {
     }
 
     @ParameterizedTest
-    @MethodSource("illegalJson")
+    @MethodSource("illegalJsonPair")
     public void shouldThrowJSONExceptionWhenIllegalJson(String json1, String json2) {
         assertThrows(JSONException.class, () -> {
             JsonMessageMatcher.jsonMatch(json1, json2);
@@ -33,6 +33,18 @@ public class JsonMessageMatcherTest implements TestDataProvider {
     @ParameterizedTest
     @MethodSource("jsonValueDoesNotMatchRegexpMask")
     public void shouldNotMatchJsonValuesByWrongRegexp(String json1, String json2) {
+        assertFalse(JsonMessageMatcher.jsonMatch(json1, json2));
+    }
+
+    @ParameterizedTest
+    @MethodSource("jsonMatchByValue")
+    public void shouldMatchJsonWithSameValues(String json1, String json2) {
+        assertTrue(JsonMessageMatcher.jsonMatch(json1, json2));
+    }
+
+    @ParameterizedTest
+    @MethodSource("jsonNotMatchByValue")
+    public void shouldNotMatchJsonWithDifferentValues(String json1, String json2) {
         assertFalse(JsonMessageMatcher.jsonMatch(json1, json2));
     }
 }

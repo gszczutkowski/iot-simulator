@@ -11,7 +11,9 @@ public interface TestDataProvider {
         return Stream.of(
                 Arguments.of("{}", null),
                 Arguments.of(null, "{}"),
-                Arguments.of(null, null)
+                Arguments.of(null, null),
+                Arguments.of("", "{}"),
+                Arguments.of("{}", "")
         );
     }
 
@@ -23,13 +25,11 @@ public interface TestDataProvider {
         );
     }
 
-    static Stream<Arguments> illegalJson() {
+    static Stream<Arguments> illegalJsonPair() {
         return Stream.of(
                 Arguments.of("{}", "{"),
                 Arguments.of("}", "{}"),
                 Arguments.of("{'id':1}", "{'id':'{as}}"),
-                Arguments.of("", "{}"),
-                Arguments.of("{}", ""),
                 Arguments.of("{}", "{}'id':1}"),
                 Arguments.of("id", "{}"),
                 Arguments.of("id:1", "{}"),
@@ -39,15 +39,23 @@ public interface TestDataProvider {
         );
     }
 
+    static Stream<Arguments> illegalJsoStructure() {
+        return Stream.of(
+                Arguments.of("{"),
+                Arguments.of("}"),
+                Arguments.of("{}'id':1}"),
+                Arguments.of("id"),
+                Arguments.of("id:1"),
+                Arguments.of("{'id':[10, 12, 'a': []}"),
+                Arguments.of("{'id':[10}]")
+        );
+    }
+
     static Stream<Arguments> illegalUpdaterJson() {
         return Stream.of(
                 Arguments.of("{"),
-                Arguments.of(""),
-                Arguments.of("{id:1}"),
                 Arguments.of("{}'id':1}"),
-                Arguments.of("{'id':'{}'}"),
                 Arguments.of("{'id':[10, 12}")
-
         );
     }
 
@@ -56,6 +64,7 @@ public interface TestDataProvider {
                 Arguments.of("{'id':'Dev10'}", "{'id':'{[A-Za-z0-9]+}'}"),
                 Arguments.of("{'id':10}", "{'id':'{[0-9]+}'}"),
                 Arguments.of("{'id':10}", "{'id':10}"),
+                Arguments.of("{id:10}", "{'id':10}"),
                 Arguments.of("{'id':10.99}", "{'id':'{[0-9\\\\.]+}'}"),
                 Arguments.of("{'temp':'10.99 Celcius'}", "{'temp':'{[A-Za-z0-9\\\\. ]+}'}"),
                 Arguments.of("{'temp':'10.99 Celcius'}", "{'temp':'{[\\\\w\\\\. ]+}'}"),
@@ -64,7 +73,7 @@ public interface TestDataProvider {
                 Arguments.of("{'temp':'A'}", "{'temp':'{[A-Z]{0,2}}'}"),
                 Arguments.of("{'temp':''}", "{'temp':'{[A-Z]{0,2}}'}"),
                 Arguments.of("{'temp':'az$#10'}", "{'temp':'{.*}'}"),
-                Arguments.of("{'val':'az$\"'1#'}", "{'val':'az$\"'1#'}"),
+                Arguments.of("{'val':'az$\"\\'1#'}", "{'val':'az$\"\\'1#'}"),
                 Arguments.of("{\n"
                                 + "'id':10,\n"
                                 + "'name':'Jan',\n"
@@ -99,6 +108,26 @@ public interface TestDataProvider {
         );
     }
 
+    static Stream<Arguments> jsonMatchByValue() {
+        return Stream.of(
+                Arguments.of("{'id':'Dev10'}", "{'id':'Dev10'}"),
+                Arguments.of("{'id': -1}", "{'id': -1}"),
+                Arguments.of("{'id':10.99}", "{'id':10.99}"),
+                Arguments.of("{'temp':'10.99 Celcius'}", "{'temp':'10.99 Celcius'}")
+        );
+    }
+
+    static Stream<Arguments> jsonNotMatchByValue() {
+        return Stream.of(
+                Arguments.of("{'id':'Dev10 '}", "{'id':'Dev10'}"),
+                Arguments.of("{'id': 1}", "{'id': -1}"),
+                Arguments.of("{'id':11}", "{'id':10.9999999999}"),
+                Arguments.of("{'temp':'10.99 Celcius'}", "{'temp':'10.99    Celcius'}"),
+                Arguments.of("{'temp':[1, 0, -1]}", "{'temp':[1, 0]}"),
+                Arguments.of("{'temp':[1, 0, -1]}", "{'temp':[-1, 0, 1]}"),
+                Arguments.of("{'month':['April', 'June']}", "{'month':['June','April']}")
+        );
+    }
 
     static Stream<Arguments> maskJsonThrowingMappingException() {
         return Stream.of(
