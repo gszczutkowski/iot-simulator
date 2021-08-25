@@ -31,9 +31,6 @@ public interface SubscriberTestDataProvider {
     static Stream<Arguments> strictNotMatchingMessagesWithTopic() {
         return Stream.of(
                 Arguments.of(
-                        "myhome/groundfloor/livingroom", "{'tmp': 23}",
-                        "myhome/groundfloor/room", "{'tmp': 23}"),
-                Arguments.of(
                         "+/groundfloor/livingroom", "{'tmp': '{[0-9]+}'}",
                         "myhome/groundfloor/livingroom", "{'tmp': 'ID'}"),
                 Arguments.of(
@@ -45,6 +42,14 @@ public interface SubscriberTestDataProvider {
                 Arguments.of(
                         "myhome/#", "{'tmp': 23}",
                         "myhome/groundfloor/livingroom", "{'tmp': [23]}")
+        );
+    }
+
+    static Stream<Arguments> notMatchingTopics() {
+        return Stream.of(
+                Arguments.of("+/groundfloor/livingroom", "groundfloor/livingroom", "myhome/groundfloor/livingroom"),
+                Arguments.of("myhome/groundfloor/livingroom", "myhome/groundfloor", "myhome/groundfloor/livingroom"),
+                Arguments.of("myhome/groundfloor/+", "myhome/groundfloor/livingroom", "myhome/groundfloor/bathroom")
         );
     }
 
@@ -92,8 +97,8 @@ public interface SubscriberTestDataProvider {
                         "myhome/groundfloor", "{'tmp': 23, 'name': 'Livingroom'}", "{'tmp': 26, 'name': 'Bathroom'}"),
                 Arguments.of(
                         "myhome/#", "{'temp': [21, 22, 20, 24], 'name': 'groundfloor', 'livingroom': {'temp': 22}}",
-                        "myhome/groundfloor", "{'temp': [21, 22, 20, 24], 'name': 'groundfloor', 'livingroom': {'temp': 22}}",
-                            "{'temp': [22, 21, 20, 24], 'name': 'groundfloor', 'livingroom': {'temp': 22}}")
+                        "myhome/groundfloor", "{'name': 'groundfloor', 'livingroom': {'temp': 22}, 'temp': [21, 22, 20, 24]}",
+                            "{'temp': [21, 22, 20, 24], 'name': 'groundfloor', 'livingroom': {'temp': 22}}")
         );
     }
 
