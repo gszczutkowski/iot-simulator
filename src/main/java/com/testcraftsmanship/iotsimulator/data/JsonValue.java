@@ -8,6 +8,10 @@ public class JsonValue {
     private String value;
 
     public JsonValue(JsonValueType type, String value) {
+        if (isNotCorrectValueForType(type, value)) {
+            throw new IllegalArgumentException("JsonValue can't be created fromm json type " + type
+                    + " and value " + value);
+        }
         this.type = type;
         this.value = value;
     }
@@ -19,5 +23,10 @@ public class JsonValue {
         } else {
             return value;
         }
+    }
+
+    private boolean isNotCorrectValueForType(JsonValueType attrType, String attrValue) {
+        return attrValue == null || JsonValueType.OBJECT.equals(attrType)
+                || (!JsonValueType.STRING.equals(attrType) && attrValue.isEmpty());
     }
 }
