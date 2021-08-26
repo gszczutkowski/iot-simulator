@@ -14,9 +14,6 @@ public final class Constant {
     private static final String ACCESS_KEY_ID = DefaultAWSCredentialsProviderChain.getInstance().getCredentials().getAWSAccessKeyId();
     private static final String SECRET_KEY = DefaultAWSCredentialsProviderChain.getInstance().getCredentials().getAWSSecretKey();
 
-    public static final String TESTING_CLIENT_ID = "testcraftsmanship-aws-client";
-    public static final String TESTED_CLIENT_ID = "testcraftsmanship-iot-simulator";
-
     public static final Credentials AWS_CREDENTIALS = new Credentials(ACCESS_KEY_ID, SECRET_KEY);
     public static final String MQTT_ENDPOINT = getSsmParameterValue(Regions.EU_WEST_1, MQTT_ENDPOINT_SSM_PARAMETER_NAME);
 }

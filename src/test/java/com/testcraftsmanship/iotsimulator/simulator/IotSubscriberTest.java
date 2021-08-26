@@ -7,15 +7,19 @@ import com.testcraftsmanship.iotsimulator.iottype.subscriber.IotSubscriber;
 import com.testcraftsmanship.iotsimulator.iottype.creator.subscriber.SubStateSelector;
 import com.testcraftsmanship.iotsimulator.utils.SubscriberTestDataProvider;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeoutException;
 
 import static com.testcraftsmanship.iotsimulator.base.Constant.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Execution(ExecutionMode.CONCURRENT)
 public class IotSubscriberTest extends BaseAwsTest implements SubscriberTestDataProvider {
     private IotSubscriber subscriber;
 
@@ -194,7 +198,7 @@ public class IotSubscriberTest extends BaseAwsTest implements SubscriberTestData
 
     private SubStateSelector getSubscriber() {
         return new IotSimulator(MQTT_ENDPOINT,
-                TESTED_CLIENT_ID,
+                UUID.randomUUID().toString(),
                 AWS_CREDENTIALS,
                 Regions.EU_WEST_1.getName())
                 .subscriber();

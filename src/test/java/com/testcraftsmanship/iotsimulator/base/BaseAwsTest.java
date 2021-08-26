@@ -6,6 +6,7 @@ import com.amazonaws.services.iot.client.AWSIotMqttClient;
 import com.amazonaws.services.iot.client.auth.StaticCredentialsProvider;
 
 import java.time.Instant;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Supplier;
@@ -24,7 +25,7 @@ public class BaseAwsTest {
     private static final int DEFAULT_WAIT_TIME_IN_SECONDS = 5;
 
     protected void publishWithAwsClient(String topic, String... messages) {
-        AWSIotMqttClient mqttClient = getAWSIotMqttClient(TESTING_CLIENT_ID);
+        AWSIotMqttClient mqttClient = getAWSIotMqttClient(UUID.randomUUID().toString());
         try {
             mqttClient.connect();
             for (String message : messages) {
