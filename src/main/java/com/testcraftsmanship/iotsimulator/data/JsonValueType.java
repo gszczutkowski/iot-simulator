@@ -9,7 +9,7 @@ public enum JsonValueType {
     public static JsonValueType parseJsonValueType(Object object) {
         if (object instanceof String) {
             return JsonValueType.STRING;
-        } else if (object instanceof Integer) {
+        } else if (object instanceof Number) {
             return JsonValueType.NUMBER;
         } else if (object instanceof Boolean) {
             return JsonValueType.BOOLEAN;

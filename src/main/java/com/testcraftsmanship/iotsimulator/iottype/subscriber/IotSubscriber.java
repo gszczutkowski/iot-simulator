@@ -28,7 +28,7 @@ public class IotSubscriber extends IotDevice<IotSubscriber> {
     public String waitForMatchingMessage(int timeoutInSeconds) throws TimeoutException {
         long timeout = Instant.now().getEpochSecond() + timeoutInSeconds;
         while (Instant.now().getEpochSecond() < timeout) {
-            Optional<String> message = subscribedTopic.popPublishedMessage();
+            Optional<String> message = subscribedTopic.popReceivedMessage();
             if (message.isPresent()) {
                 return message.get();
             }
@@ -41,12 +41,16 @@ public class IotSubscriber extends IotDevice<IotSubscriber> {
         throw new TimeoutException("Expected message didn't reach given topic or message does not match the mask");
     }
 
-    public boolean doesMatchingMessageReachedTheTopic() {
-        return subscribedTopic.popPublishedMessage().isPresent();
+    public boolean doesExpectedMessagesReachedTheTopic() {
+        return subscribedTopic.receivedExpectedMessagesMatchingMask();
     }
 
     public List<String> allMatchingMessages() {
-        return subscribedTopic.allPublishedMessages();
+        return subscribedTopic.matchingReceivedMessages();
+    }
+
+    public List<String> allMessages() {
+        return subscribedTopic.allReceivedMessages();
     }
 
     @Override
