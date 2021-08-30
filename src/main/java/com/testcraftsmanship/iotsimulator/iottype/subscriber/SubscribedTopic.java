@@ -77,7 +77,7 @@ public class SubscribedTopic extends AWSIotTopic {
     }
 
     private boolean isMessageMatchingTheMask(String message) {
-        return jsonMatch(subscriptionData.getIotMessage().getMessage(), message);
+        return jsonMatch(message, subscriptionData.getIotMessage().getMessage(), settings.isStrictMatching());
     }
 
     private boolean isExpectedMaskSet() {

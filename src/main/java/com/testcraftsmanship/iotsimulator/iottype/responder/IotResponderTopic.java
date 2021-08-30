@@ -61,12 +61,12 @@ public class IotResponderTopic extends AWSIotTopic {
             return messages;
         }
         return messages.stream().map(message -> {
-                    try {
-                        return new JsonParamsUpdater(message, paramsWithValues).updateJsonParamsWithValues().toString();
-                    } catch (MappingException e) {
-                        throw new IllegalArgumentException("Unable to update message " + message + " with given parameters");
-                    }
-                })
+            try {
+                return new JsonParamsUpdater(message, paramsWithValues).updateJsonParamsWithValues().toString();
+            } catch (MappingException e) {
+                throw new IllegalArgumentException("Unable to update message " + message + " with given parameters");
+            }
+        })
                 .collect(Collectors.toList());
     }
 
@@ -81,7 +81,7 @@ public class IotResponderTopic extends AWSIotTopic {
     }
 
     private boolean isMessageMatchingTheMask(String message) {
-        return jsonMatch(expectedMessageMask, message);
+        return jsonMatch(message, expectedMessageMask, settings.isStrictMatching());
     }
 
     private boolean isExpectedMaskSet() {

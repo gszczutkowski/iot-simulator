@@ -13,7 +13,7 @@ public final class JsonStructureValidator {
     private JsonStructureValidator() {
     }
 
-    public static void checkIfJsonHaveCorrectStructure(String json) {
+    public static void checkIfJsonHasCorrectStructure(String json) {
         if (isNullOrEmpty(json)) {
             throw new IllegalArgumentException("Json argument can not be null nor empty");
         }

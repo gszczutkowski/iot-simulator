@@ -11,7 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static com.testcraftsmanship.iotsimulator.data.JsonStructureValidator.checkIfJsonHaveCorrectStructure;
+import static com.testcraftsmanship.iotsimulator.data.JsonStructureValidator.checkIfJsonHasCorrectStructure;
 import static com.testcraftsmanship.iotsimulator.data.JsonValueType.parseJsonValueType;
 import static com.testcraftsmanship.iotsimulator.constant.ParserConstants.paramContentRegex;
 
@@ -25,8 +25,8 @@ public class JsonParamsExtractor {
         if (jsonMessage == null || jsonMask == null) {
             throw new IllegalArgumentException("Arguments can not be null");
         }
-        checkIfJsonHaveCorrectStructure(jsonMessage);
-        checkIfJsonHaveCorrectStructure(jsonMask);
+        checkIfJsonHasCorrectStructure(jsonMessage);
+        checkIfJsonHasCorrectStructure(jsonMask);
         log.debug("Extracting values from json {} based on mask {} with strict set to {}",
                 jsonMessage, jsonMask, strict);
         this.strictMatching = strict;

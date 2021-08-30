@@ -20,7 +20,7 @@ public class JsonParamsExtractorTest implements TestDataProvider {
             throws MappingException {
         final boolean strictMatching = true;
         JsonParamsExtractor paramsExtractor = new JsonParamsExtractor(json, mask, strictMatching);
-        assertThat(result).containsExactlyInAnyOrderEntriesOf(paramsExtractor.getParamsWithValues());
+        assertThat(paramsExtractor.getParamsWithValues()).containsExactlyInAnyOrderEntriesOf(result);
     }
 
     @ParameterizedTest
@@ -29,7 +29,7 @@ public class JsonParamsExtractorTest implements TestDataProvider {
             throws MappingException {
         final boolean strictMatching = false;
         JsonParamsExtractor paramsExtractor = new JsonParamsExtractor(json, mask, strictMatching);
-        assertThat(result).containsExactlyInAnyOrderEntriesOf(paramsExtractor.getParamsWithValues());
+        assertThat(paramsExtractor.getParamsWithValues()).containsExactlyInAnyOrderEntriesOf(result);
     }
 
     @ParameterizedTest
@@ -39,7 +39,23 @@ public class JsonParamsExtractorTest implements TestDataProvider {
         final boolean strictMatching = true;
         Map<String, String> result = new HashMap<>();
         JsonParamsExtractor paramsExtractor = new JsonParamsExtractor(json, mask, strictMatching);
-        assertThat(result).containsExactlyInAnyOrderEntriesOf(paramsExtractor.getParamsWithValues());
+        assertThat(paramsExtractor.getParamsWithValues()).containsExactlyInAnyOrderEntriesOf(result);
+    }
+
+    @ParameterizedTest
+    @MethodSource("jsonMatchByValueNoStrict")
+    public void shouldReturnEmptyMapWhenMatchByValueWithStrictDisabled(String json, String mask) throws MappingException {
+        Map<String, String> result = new HashMap<>();
+        JsonParamsExtractor paramsExtractor = new JsonParamsExtractor(json, mask, false);
+        assertThat(paramsExtractor.getParamsWithValues()).containsExactlyInAnyOrderEntriesOf(result);
+    }
+
+    @ParameterizedTest
+    @MethodSource("jsonNotMatchByValueNoStrict")
+    public void shouldThrowJSONExceptionWhenJsonNotMatchByValueWithStrictDisabled(String json, String mask) {
+        assertThrows(MappingException.class, () -> {
+            new JsonParamsExtractor(json, mask, false);
+        });
     }
 
     @ParameterizedTest
