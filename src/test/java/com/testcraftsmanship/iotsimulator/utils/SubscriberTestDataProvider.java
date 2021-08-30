@@ -62,7 +62,7 @@ public interface SubscriberTestDataProvider {
     }
 
     static Stream<Arguments> strictDisabledMatchingMessagesWithTopic() {
-        List<String> uuids = getUuids(5);
+        List<String> uuids = getUuids(6);
         return Stream.of(
                 Arguments.of(
                         uuids.get(0) + "/myhome/groundfloor/livingroom", "{'tmp': 23}",
@@ -74,11 +74,14 @@ public interface SubscriberTestDataProvider {
                         uuids.get(2) + "/myhome/groundfloor/+", "{'name': '{[A-Za-z ]+}'}",
                         uuids.get(2) + "/myhome/groundfloor/livingroom", "{'id': 'AA', 'name': 'My room'}"),
                 Arguments.of(
-                        uuids.get(3) + "/myhome/#", "{'tmp': [10, 23]}",
-                        uuids.get(3) + "/myhome/groundfloor/livingroom", "{'tmp': [10]}"),
+                        uuids.get(3) + "/myhome/#", "{'a': {'b': {'c' : 21, 'd':'{[A-Z]+}'}}}",
+                        uuids.get(3) + "/myhome/groundfloor/livingroom", "{'a': {'b': {'c' : 21, 'd':'AWX'}, 'd': {'e': 0}}}"),
                 Arguments.of(
-                        uuids.get(4) + "/myhome/#", "{'tmp': [10, 23]}",
-                        uuids.get(4) + "/myhome/groundfloor/livingroom", "{'tmp': [1023]}")
+                        uuids.get(4) + "/myhome/#", "{'a': {'d': {'e': '{[0-9]+}'}}}",
+                        uuids.get(4) + "/myhome/groundfloor/livingroom", "{'a': {'b': {'c' : 21, 'd':'AWX'}, 'd': {'e': 0}}}"),
+                Arguments.of(
+                        uuids.get(5) + "/myhome/#", "{'a': {'b': {'c' : 21}, 'd': {'e': '{[0-9]+}'}}}",
+                        uuids.get(5) + "/myhome/groundfloor/livingroom", "{'a': {'b': {'c' : 21, 'd':'AWX'}, 'd': {'e': 0}}}")
         );
     }
 

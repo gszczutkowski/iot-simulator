@@ -8,7 +8,7 @@ import java.util.Map;
 
 import static com.testcraftsmanship.iotsimulator.constant.ParserConstants.paramRegexWith;
 import static com.testcraftsmanship.iotsimulator.constant.ParserConstants.paramWith;
-import static com.testcraftsmanship.iotsimulator.data.JsonStructureValidator.checkIfJsonHaveCorrectStructure;
+import static com.testcraftsmanship.iotsimulator.data.JsonStructureValidator.checkIfJsonHasCorrectStructure;
 
 @Slf4j
 public class JsonParamsUpdater {
@@ -19,7 +19,7 @@ public class JsonParamsUpdater {
         if (jsonMessage == null || paramsWithValues == null) {
             throw new IllegalArgumentException("Arguments can not be null");
         }
-        checkIfJsonHaveCorrectStructure(jsonMessage);
+        checkIfJsonHasCorrectStructure(jsonMessage);
         this.jsonMessage = new JSONObject(jsonMessage).toString();
         this.paramsWithValues = paramsWithValues;
     }

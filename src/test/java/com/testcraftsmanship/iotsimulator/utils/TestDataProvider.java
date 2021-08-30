@@ -117,6 +117,22 @@ public interface TestDataProvider {
         );
     }
 
+    static Stream<Arguments> jsonMatchByValueNoStrict() {
+        return Stream.of(
+                Arguments.of("{'id':'Dev10', 'ver': 10.20}", "{'ver':10.20}"),
+                Arguments.of("{'dev': {'id': -1, 'ver': 'hw10.20'}}", "{'dev': {'id': -1}}"),
+                Arguments.of("{'id':10.99, 'name': 'John'}", "{'name': 'John'}")
+        );
+    }
+
+    static Stream<Arguments> jsonNotMatchByValueNoStrict() {
+        return Stream.of(
+                Arguments.of("{'id':'Dev10', 'ver': 10.20}", "{'ver':10.30}"),
+                Arguments.of("{'dev': {'id': -1, 'ver': 'hw10.20'}}", "{'dev': {'id': 1}}"),
+                Arguments.of("{'id':10.99, 'name': 'John'}", "{'name': 'Cash'}")
+        );
+    }
+
     static Stream<Arguments> jsonNotMatchByValue() {
         return Stream.of(
                 Arguments.of("{'id':'Dev10 '}", "{'id':'Dev10'}"),

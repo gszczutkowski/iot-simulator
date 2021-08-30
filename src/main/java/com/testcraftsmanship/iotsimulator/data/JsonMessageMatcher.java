@@ -4,16 +4,18 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.NumericNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.testcraftsmanship.iotsimulator.constant.ParserConstants.paramContentRegex;
-import static com.testcraftsmanship.iotsimulator.data.JsonStructureValidator.checkIfJsonHaveCorrectStructure;
+import static com.testcraftsmanship.iotsimulator.data.JsonStructureValidator.checkIfJsonHasCorrectStructure;
 
 @Slf4j
 public final class JsonMessageMatcher {
@@ -21,20 +23,39 @@ public final class JsonMessageMatcher {
     private JsonMessageMatcher() {
     }
 
-    public static boolean jsonMatch(String json1, String json2) {
-        log.debug("Comparing json {} with json {}", json1, json2);
-        if (json1 == null || json2 == null) {
+    public static boolean jsonMatch(String actual, String expected, boolean strict) {
+        log.debug("Comparing json {} with json {}", actual, expected);
+        if (actual == null || expected == null) {
             throw new IllegalArgumentException("Arguments can not be null");
         }
-        checkIfJsonHaveCorrectStructure(json1);
-        checkIfJsonHaveCorrectStructure(json2);
+        checkIfJsonHasCorrectStructure(actual);
+        checkIfJsonHasCorrectStructure(expected);
         ObjectMapper mapper = new ObjectMapper();
         try {
-            JsonNode mappedJson1 = mapper.readTree(new JSONObject(json1).toString());
-            JsonNode mappedJson2 = mapper.readTree(new JSONObject(json2).toString());
+            JsonNode mappedJson1 = mapper.readTree(new JSONObject(actual).toString());
+            JsonNode mappedJson2 = mapper.readTree(new JSONObject(expected).toString());
+            if (!strict) {
+                deepMissingFieldsRemover(mappedJson1, mappedJson2);
+            }
             return mappedJson1.equals(new ComparatorWithMask(), mappedJson2);
         } catch (JsonProcessingException e) {
             throw new IllegalArgumentException("Problem with json processing");
+        }
+    }
+
+    private static void deepMissingFieldsRemover(JsonNode actual, JsonNode expectedNotStrict) {
+        Iterator<String> fieldNameIterator = actual.fieldNames();
+        while (fieldNameIterator.hasNext()) {
+            String fieldName = fieldNameIterator.next();
+            if (expectedNotStrict.hasNonNull(fieldName)) {
+                JsonNode childActual = actual.get(fieldName);
+                JsonNode childExpected = expectedNotStrict.get(fieldName);
+                if (childActual instanceof ObjectNode && childExpected instanceof ObjectNode) {
+                    deepMissingFieldsRemover(childActual, childExpected);
+                }
+            } else {
+                fieldNameIterator.remove();
+            }
         }
     }
 

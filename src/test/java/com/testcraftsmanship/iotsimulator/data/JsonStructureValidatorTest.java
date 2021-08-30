@@ -12,7 +12,7 @@ public class JsonStructureValidatorTest implements TestDataProvider {
     @MethodSource("illegalJsoStructure")
     public void shouldThrowIllegalArgumentExceptionForNullJsonValue(String json) {
         assertThrows(JSONException.class, () -> {
-            JsonStructureValidator.checkIfJsonHaveCorrectStructure(json);
+            JsonStructureValidator.checkIfJsonHasCorrectStructure(json);
         });
     }
 }
