@@ -41,11 +41,11 @@ public interface SubscriberTestDataProvider {
                         "+/groundfloor/livingroom/" + uuids.get(0), "{'tmp': '{[0-9]+}'}",
                         "myhome/groundfloor/livingroom/" + uuids.get(0), "{'tmp': 'ID'}"),
                 Arguments.of(
-                        uuids.get(1) + "/myhome/+/livingroom", "{'name': 'my room', 'id' = 2}",
-                        uuids.get(1) + "/myhome/groundfloor/livingroom", "{'name': 'my room', 'id' = 3}"),
+                        uuids.get(1) + "/myhome/+/livingroom", "{'name': 'my room', 'id': 2}",
+                        uuids.get(1) + "/myhome/groundfloor/livingroom", "{'name': 'my room', 'id': 3}"),
                 Arguments.of(
                         uuids.get(2) + "/myhome/groundfloor/+", "{'name': '{[A-Za-z ]+}'}",
-                        uuids.get(2) + "/myhome/groundfloor/livingroom", "{'name': 'My room 77', 'id' = 3"),
+                        uuids.get(2) + "/myhome/groundfloor/livingroom", "{'name': 'My room 77', 'id': 3}"),
                 Arguments.of(
                         uuids.get(3) + "/myhome/#", "{'tmp': 23}",
                         uuids.get(3) + "/myhome/groundfloor/livingroom", "{'tmp': [23]}")

@@ -17,12 +17,10 @@ import static com.testcraftsmanship.iotsimulator.constant.GeneralConstants.SUBSC
 
 public class IotSubscriber extends IotDevice<IotSubscriber> {
     private final SubscribedTopic subscribedTopic;
-    private final IotDeviceSettings settings;
 
     public IotSubscriber(AWSIotMqttClient iotMqttClient, SubscriptionData subscriptionData, IotDeviceSettings settings) {
         super(iotMqttClient);
         this.subscribedTopic = new SubscribedTopic(subscriptionData, settings);
-        this.settings = settings;
     }
 
     public String waitForMatchingMessage(int timeoutInSeconds) throws TimeoutException {

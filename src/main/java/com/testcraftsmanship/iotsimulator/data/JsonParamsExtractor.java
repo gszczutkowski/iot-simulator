@@ -20,6 +20,13 @@ public class JsonParamsExtractor {
     private final Map<String, JsonValue> jsonParamsWithValues;
     private final boolean strictMatching;
 
+    /**
+     * Construct an object which extracts parameters from jsonMessage based on the jsonMask
+     * @param jsonMessage from where values of the parameters to be extracted
+     * @param jsonMask from where keys of the parameters to be extracted
+     * @param strict whether both JSONs should have the same keys
+     * @throws MappingException when mapping not possible
+     */
     public JsonParamsExtractor(String jsonMessage, String jsonMask, boolean strict)
             throws MappingException {
         if (jsonMessage == null || jsonMask == null) {
@@ -27,13 +34,17 @@ public class JsonParamsExtractor {
         }
         checkIfJsonHasCorrectStructure(jsonMessage);
         checkIfJsonHasCorrectStructure(jsonMask);
-        log.debug("Extracting values from json {} based on mask {} with strict set to {}",
+        log.debug("Extracting values from JSON {} based on mask {} with strict set to {}",
                 jsonMessage, jsonMask, strict);
         this.strictMatching = strict;
         this.jsonParamsWithValues = extractParamsValuesFromMessage(new JSONObject(jsonMessage), new JSONObject(jsonMask));
         log.debug("Extracted params: {}", jsonParamsWithValues);
     }
 
+    /**
+     * Returns the map of parameters with values from JSON passed in constructor and based on the mask from constructor.
+     * @return map of parameters with values extracted from JSON
+     */
     public Map<String, String> getParamsWithValues() {
         return jsonParamsWithValues.entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().toString()));
@@ -42,7 +53,7 @@ public class JsonParamsExtractor {
     private Map<String, JsonValue> extractParamsValuesFromMessage(JSONObject jsonMessage, JSONObject jsonMask)
             throws MappingException {
         if (strictMatching && !jsonMask.keySet().equals(jsonMessage.keySet())) {
-            throw new MappingException("Mask is not matching the parsed json. Key sets are different:"
+            throw new MappingException("Mask is not matching the parsed JSON. Key sets are different:"
                     + jsonMask.keySet() + " " + jsonMessage.keySet());
         }
         Map<String, JsonValue> attributesWithValues = new HashMap<>();
@@ -51,7 +62,7 @@ public class JsonParamsExtractor {
             try {
                 messagePart = jsonMessage.get(key);
             } catch (org.json.JSONException e) {
-                throw new MappingException("Unable to find value in json for parameter " + key);
+                throw new MappingException("Unable to find value in JSON for parameter " + key);
             }
             Object maskPart = jsonMask.get(key);
             if (isJsonObject(messagePart) && isJsonObject(maskPart)) {
@@ -83,7 +94,7 @@ public class JsonParamsExtractor {
         if (jsonMessagePart.equals(jsonMaskPart)) {
             return attributesWithValues;
         } else {
-            throw new MappingException("Mask is not matching the parsed json. Value for mask "
+            throw new MappingException("Mask is not matching the parsed JSON. Value for mask "
                     + jsonMaskPart + " differs from message " + jsonMessagePart);
         }
     }
@@ -97,8 +108,10 @@ public class JsonParamsExtractor {
         Map<String, JsonValue> attributesWithValues = new HashMap<>();
         for (int i = 0; i < jsonMaskArray.length(); i++) {
             if (jsonMaskArray.get(i) instanceof JSONObject) {
-                attributesWithValues = extractParamsValuesFromMessage(
-                        (JSONObject) jsonMessageArray.get(i), (JSONObject) jsonMaskArray.get(i));
+                attributesWithValues.putAll(extractParamsValuesFromMessage(
+                        (JSONObject) jsonMessageArray.get(i), (JSONObject) jsonMaskArray.get(i)));
+            } else if (jsonMaskArray.get(i).toString().matches(paramContentRegex())) {
+                attributesWithValues.putAll(extractParamFromPart(jsonMessageArray.get(i), jsonMaskArray.get(i)));
             }
         }
         return attributesWithValues;

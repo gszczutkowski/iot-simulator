@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class JsonMessageMatcherTest implements TestDataProvider {
@@ -14,17 +15,15 @@ public class JsonMessageMatcherTest implements TestDataProvider {
     @ParameterizedTest
     @MethodSource("jsonAsNull")
     public void shouldThrowIllegalArgumentExceptionForNullJsonValue(String json1, String json2) {
-        assertThrows(IllegalArgumentException.class, () -> {
-            JsonMessageMatcher.jsonMatch(json1, json2, STRICT_MATCHING_ENABLED);
-        });
+        assertThrows(IllegalArgumentException.class,
+                () -> JsonMessageMatcher.jsonMatch(json1, json2, STRICT_MATCHING_ENABLED));
     }
 
     @ParameterizedTest
     @MethodSource("illegalJsonPair")
     public void shouldThrowJSONExceptionWhenIllegalJson(String json1, String json2) {
-        assertThrows(JSONException.class, () -> {
-            JsonMessageMatcher.jsonMatch(json1, json2, STRICT_MATCHING_ENABLED);
-        });
+        assertThrows(JSONException.class,
+                () -> JsonMessageMatcher.jsonMatch(json1, json2, STRICT_MATCHING_ENABLED));
     }
 
     @ParameterizedTest
@@ -61,5 +60,24 @@ public class JsonMessageMatcherTest implements TestDataProvider {
     @MethodSource("jsonNotMatchByValueNoStrict")
     public void shouldNotMatchByValueWithStrictDisabled(String json1, String json2) {
         assertFalse(JsonMessageMatcher.jsonMatch(json1, json2, STRICT_MATCHING_DISABLED));
+    }
+
+    @ParameterizedTest
+    @MethodSource("jsonAsNull")
+    public void structureMatcherShouldThrowIllegalArgumentExceptionForNullJsonValue(String json1, String json2) {
+        assertThrows(IllegalArgumentException.class, () ->
+            JsonMessageMatcher.jsonStructureMatch(json1, json2, STRICT_MATCHING_ENABLED));
+    }
+
+    @ParameterizedTest
+    @MethodSource("strictMasksJsonStructureWithParams")
+    public void shouldPerformStrictJsonStructureMatching(String json, String mask, boolean result) {
+        assertThat(JsonMessageMatcher.jsonStructureMatch(json, mask, STRICT_MATCHING_ENABLED)).isEqualTo(result);
+    }
+
+    @ParameterizedTest
+    @MethodSource("noStrictMasksJsonStructureWithParams")
+    public void shouldPerformJsonStructureMatching(String json, String mask, boolean result) {
+        assertThat(JsonMessageMatcher.jsonStructureMatch(json, mask, STRICT_MATCHING_DISABLED)).isEqualTo(result);
     }
 }

@@ -15,6 +15,11 @@ public class JsonParamsUpdater {
     private final String jsonMessage;
     private final Map<String, String> paramsWithValues;
 
+    /**
+     * Construct an object with JSON that should be filled in with params from the map
+     * @param jsonMessage containing parameters that will be replaced with values from map
+     * @param paramsWithValues to be filled in the JSON
+     */
     public JsonParamsUpdater(String jsonMessage, Map<String, String> paramsWithValues) {
         if (jsonMessage == null || paramsWithValues == null) {
             throw new IllegalArgumentException("Arguments can not be null");
@@ -24,6 +29,11 @@ public class JsonParamsUpdater {
         this.paramsWithValues = paramsWithValues;
     }
 
+    /**
+     * Make a JSONObject from JSON text in which parameters are replaced with the values
+     * @return JSON with parameters replaced with values
+     * @throws MappingException when mapping not possible
+     */
     public JSONObject updateJsonParamsWithValues() throws MappingException {
         log.info("Updating message {} with passed parameters", jsonMessage);
         String payload = jsonMessage;
@@ -35,10 +45,10 @@ public class JsonParamsUpdater {
             } else {
                 log.debug("Param {} has not been found so will not be updated",
                         getParam(paramValue.getKey()));
-                throw new MappingException("Param {} does not have representative in json");
+                throw new MappingException("Param {} does not have representative in JSON");
             }
         }
-        log.debug("Updated json message: {}", payload);
+        log.debug("Updated JSON message: {}", payload);
         return new JSONObject(payload);
     }
 
