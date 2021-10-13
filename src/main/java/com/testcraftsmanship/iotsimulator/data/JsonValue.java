@@ -25,6 +25,7 @@ public class JsonValue {
         }
     }
 
+    @SuppressWarnings("PMD.UselessParentheses")
     private boolean isNotCorrectValueForType(JsonValueType attrType, String attrValue) {
         return attrValue == null || JsonValueType.OBJECT.equals(attrType)
                 || (!JsonValueType.STRING.equals(attrType) && attrValue.isEmpty());

@@ -13,6 +13,10 @@ public final class JsonStructureValidator {
     private JsonStructureValidator() {
     }
 
+    /**
+     * Checks whether json has correct format
+     * @param json as a text to be verified
+     */
     public static void checkIfJsonHasCorrectStructure(String json) {
         if (isNullOrEmpty(json)) {
             throw new IllegalArgumentException("Json argument can not be null nor empty");
@@ -47,6 +51,7 @@ public final class JsonStructureValidator {
         return theChar == '{' || theChar == '[';
     }
 
+    @SuppressWarnings("PMD.UselessParentheses")
     private static boolean isTheCloseBracketAndNotMatchingLastOpenBracket(char theChar, Stack<Character> openBrackets) {
         return (theChar == '}' && openBrackets.pop() != '{') || (theChar == ']' && openBrackets.pop() != '[');
     }

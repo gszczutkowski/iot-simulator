@@ -7,6 +7,7 @@ import com.testcraftsmanship.iotsimulator.item.SubscriptionData;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,7 @@ public class IotResponderCreator implements ResStateSelector, ResPreconditionSet
 
     public IotResponderCreator(AWSIotMqttClient iotMqttClient) {
         this.iotMqttClient = iotMqttClient;
+        this.publishingTopicsWithMessages = new HashMap<>();
     }
 
     @Override
@@ -61,12 +63,12 @@ public class IotResponderCreator implements ResStateSelector, ResPreconditionSet
 
     @Override
     public SubscriptionData getSubscriptionData() {
-        return null;
+        return subscriptionData;
     }
 
     @Override
     public void setSubscriptionData(SubscriptionData subscriptionData) {
-
+        this.subscriptionData = subscriptionData;
     }
 
     @Override

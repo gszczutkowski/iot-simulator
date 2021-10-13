@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import static com.amazonaws.services.iot.client.AWSIotConnectionStatus.CONNECTED;
 
@@ -24,11 +25,6 @@ public class IotPublisher extends IotDevice<IotPublisher> {
         super(iotMqttClient);
         this.topicsWithMessages = topicsWithMessages;
         this.delayInSeconds = delayInSeconds;
-    }
-
-    @Override
-    protected IotPublisher getThis() {
-        return this;
     }
 
     public IotPublisher publish() {
@@ -48,7 +44,13 @@ public class IotPublisher extends IotDevice<IotPublisher> {
         while (event.isPresent()) {
             publishIotMessage(event.get());
             event = popMessageToPublish();
+            wait(delayInSeconds);
         }
+        return this;
+    }
+
+    @Override
+    protected IotPublisher getThis() {
         return this;
     }
 
@@ -86,6 +88,14 @@ public class IotPublisher extends IotDevice<IotPublisher> {
     private void startIotSimulatorWhenDisconnected() {
         if (!CONNECTED.equals(getIotMqttClient().getConnectionStatus())) {
             start();
+        }
+    }
+
+    private void wait(int timeInSeconds) {
+        try {
+            TimeUnit.SECONDS.sleep(timeInSeconds);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
     }
 }

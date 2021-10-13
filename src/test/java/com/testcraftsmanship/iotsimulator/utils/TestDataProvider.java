@@ -181,8 +181,138 @@ public interface TestDataProvider {
         );
     }
 
+    static Stream<Arguments> strictMasksJsonStructureWithParams() {
+        return Stream.of(
+                Arguments.of("{'id': 10, 'name': 'Jon'}", "{'id': '{param1}', 'name': '{param2}'}", true),
+                Arguments.of("{'id': 10, 'name': 'Jon'}", "{'id': 10, 'name': '{param}'}", true),
+                Arguments.of("{'id': 10, 'name': 'Jon'}", "{'id': -10, 'name': '{param}'}", false),
+                Arguments.of("{'id': [10, 14], 'name': 'Jon'}", "{'id': ['{param1}', '{param2}'], 'name': 'Jon'}", true),
+                Arguments.of("{'id': [10, 14], 'name': 'Jon'}", "{'id': ['{param1}', '{param2}']}", false),
+                Arguments.of("{\n"
+                                + "'id':10,\n"
+                                + "'name':'Eachainn Jewelle',\n"
+                                + "'address': {\n"
+                                + "   'street':'Main Street 3',\n"
+                                + "   'country': 'PL',\n"
+                                + "   'coordinates': [24.10, 130.23]\n"
+                                + "   }\n"
+                                + "}",
+                        "{\n"
+                                + "'id':'{param1}',\n"
+                                + "'name':'Eachainn Jewelle',\n"
+                                + "'address': {\n"
+                                + "   'street':'Main Street 3',\n"
+                                + "   'country': '{param2}',\n"
+                                + "   'coordinates': [24.10, 130.23]\n"
+                                + "   }\n"
+                                + "}", true),
+                Arguments.of("{\n"
+                                + "'id':10,\n"
+                                + "'name':'Eachainn Jewelle',\n"
+                                + "'address': {\n"
+                                + "   'street':'Main Street 3',\n"
+                                + "   'country': 'PL',\n"
+                                + "   'coordinates': [24.10, 130.23]\n"
+                                + "   }\n"
+                                + "}",
+                        "{\n"
+                                + "'id':'{param1}',\n"
+                                + "'name':'Eachainn Jewelle',\n"
+                                + "'address': {\n"
+                                + "   'street':'Main Street 3',\n"
+                                + "   'country': '{param2}'"
+                                + "   }\n"
+                                + "}", false),
+                Arguments.of("{\n"
+                                + "'id':10,\n"
+                                + "'name':'Eachainn Jewelle',\n"
+                                + "'address': {\n"
+                                + "   'street':'Main Street 3',\n"
+                                + "   'country': 'PL',\n"
+                                + "   'coordinates': [24.10, 130.23]\n"
+                                + "   }\n"
+                                + "}",
+                        "{\n"
+                                + "'id':'{param1}',\n"
+                                + "'name':'Eachainn Jewelle',\n"
+                                + "'address': {\n"
+                                + "   'street':'Main Street 3',\n"
+                                + "   'country': '{param2}',\n"
+                                + "   'coordinates': [24.10, 0.23]\n"
+                                + "   }\n"
+                                + "}", false)
+        );
+    }
+
+    static Stream<Arguments> noStrictMasksJsonStructureWithParams() {
+        return Stream.of(
+                Arguments.of("{'id': 10, 'name': 'Jon'}", "{'id': '{param1}', 'name': '{param2}'}", true),
+                Arguments.of("{'id': 10, 'name': 'Jon'}", "{'id': 10, 'name': '{param}'}", true),
+                Arguments.of("{'id': 10, 'name': 'Jon'}", "{'id': -10, 'name': '{param}'}", false),
+                Arguments.of("{'id': [10, 14], 'name': 'Jon'}", "{'id': ['{param1}', '{param2}'], 'name': 'Jon'}", true),
+                Arguments.of("{'id': [10, 14], 'name': 'Jon'}", "{'id': ['{param1}'], 'name': 'Jon'}", true),
+                Arguments.of("{'id': [10, 14], 'name': 'Jon'}", "{'id': ['{param1}', '{param2}']}", true),
+                Arguments.of("{\n"
+                                + "'id':10,\n"
+                                + "'name':'Eachainn Jewelle',\n"
+                                + "'address': {\n"
+                                + "   'street':'Main Street 3',\n"
+                                + "   'country': 'PL',\n"
+                                + "   'coordinates': [24.10, 130.23]\n"
+                                + "   }\n"
+                                + "}",
+                        "{\n"
+                                + "'id':'{param1}',\n"
+                                + "'name':'Eachainn Jewelle',\n"
+                                + "'address': {\n"
+                                + "   'street':'Main Street 3',\n"
+                                + "   'country': '{param2}',\n"
+                                + "   'coordinates': [24.10, 130.23]\n"
+                                + "   }\n"
+                                + "}", true),
+                Arguments.of("{\n"
+                                + "'id':10,\n"
+                                + "'name':'Eachainn Jewelle',\n"
+                                + "'address': {\n"
+                                + "   'street':'Main Street 3',\n"
+                                + "   'country': 'PL',\n"
+                                + "   'coordinates': [24.10, 130.23]\n"
+                                + "   }\n"
+                                + "}",
+                        "{\n"
+                                + "'id':'{param1}',\n"
+                                + "'name':'Eachainn Jewelle',\n"
+                                + "'address': {\n"
+                                + "   'street':'Main Street 3',\n"
+                                + "   'country': '{param2}'"
+                                + "   }\n"
+                                + "}", true),
+                Arguments.of("{\n"
+                                + "'id':10,\n"
+                                + "'name':'Eachainn Jewelle',\n"
+                                + "'address': {\n"
+                                + "   'street':'Main Street 3',\n"
+                                + "   'country': 'PL',\n"
+                                + "   'coordinates': [24.10, 130.23]\n"
+                                + "   }\n"
+                                + "}",
+                        "{\n"
+                                + "'id':'{param1}',\n"
+                                + "'name':'Eachainn Jewelle',\n"
+                                + "'address': {\n"
+                                + "   'street':'Main Street 3',\n"
+                                + "   'country': '{param2}',\n"
+                                + "   'coordinates': [24.10, 0.23]\n"
+                                + "   }\n"
+                                + "}", false)
+        );
+    }
+
     static Stream<Arguments> positiveExtractedParamsFromStrictMasks() {
         return Stream.of(
+                Arguments.of("{'id': 10, 'names': ['Jakub', 'Artur', 'Lisa']}",
+                        "{'id': '{idVal}', 'names': ['{name1}', '{name2}', '{name3}']}",
+                        Map.of("idVal", "10", "name1", "\"Jakub\"", "name2", "\"Artur\"", "name3", "\"Lisa\"")),
                 Arguments.of("{'id': 10, 'name': 'Jon'}", "{'id': '{idVal}', 'name': '{nameVal}'}",
                         Map.of("idVal", "10", "nameVal", "\"Jon\"")),
                 Arguments.of("{'id': [10, 14], 'name': 'Jon'}", "{'id': '{idVal}', 'name': '{nameVal}'}",
