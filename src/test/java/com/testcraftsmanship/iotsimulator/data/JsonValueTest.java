@@ -15,16 +15,12 @@ public class JsonValueTest {
     @ParameterizedTest
     @MethodSource("illegalJsonValues")
     public void shouldThrowIllegalArgumentExceptionWhileCreatingJsonValueFromIllegalJsonValueType(JsonValueType jsonValueType) {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new JsonValue(jsonValueType, "example value");
-        });
+        assertThrows(IllegalArgumentException.class, () -> new JsonValue(jsonValueType, "example value"));
     }
 
     @Test
     public void shouldThrowIllegalArgumentExceptionWhileCreatingJsonValueFromNullValue() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new JsonValue(JsonValueType.STRING, null);
-        });
+        assertThrows(IllegalArgumentException.class, () -> new JsonValue(JsonValueType.STRING, null));
     }
 
     @ParameterizedTest

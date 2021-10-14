@@ -20,16 +20,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class JsonParamsUpdaterTest implements TestDataProvider {
     @Test
     public void shouldThrowIllegalArgumentExceptionWhenJsonIsEmpty() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new JsonParamsUpdater("", new HashMap<>());
-        });
+        assertThrows(IllegalArgumentException.class, () -> new JsonParamsUpdater("", new HashMap<>()));
     }
 
     @Test
     public void shouldThrowIllegalArgumentExceptionWhenJsonIsNull() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new JsonParamsUpdater(null, new HashMap<>());
-        });
+        assertThrows(IllegalArgumentException.class, () -> new JsonParamsUpdater(null, new HashMap<>()));
     }
 
     @ParameterizedTest
@@ -55,34 +51,26 @@ public class JsonParamsUpdaterTest implements TestDataProvider {
     @ParameterizedTest
     @MethodSource("jsonAndParamsNull")
     public void shouldThrowIllegalArgumentExceptionForNullJsonValue(String json, Map<String, String> params) {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new JsonParamsUpdater(json, params);
-        });
+        assertThrows(IllegalArgumentException.class, () -> new JsonParamsUpdater(json, params));
     }
 
     @ParameterizedTest
     @MethodSource("illegalUpdaterJson")
     public void shouldThrowJSONExceptionWhenIllegalJson(String json1) {
-        assertThrows(JSONException.class, () -> {
-            new JsonParamsUpdater(json1, new HashMap<>());
-        });
+        assertThrows(JSONException.class, () -> new JsonParamsUpdater(json1, new HashMap<>()));
     }
 
     @ParameterizedTest
     @MethodSource("jsonAndParamThrowingMappingException")
     public void shouldThrowMappingExceptionWhenParamsNotMatchingThoseInJson(String json, Map<String, String> params) {
-        assertThrows(MappingException.class, () -> {
-            new JsonParamsUpdater(json, params).updateJsonParamsWithValues();
-        });
+        assertThrows(MappingException.class, () -> new JsonParamsUpdater(json, params).updateJsonParamsWithValues());
     }
 
     private void assertJsonObjectsEquals(JSONObject json1, JSONObject json2) {
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode mappedJson1 = null;
-        JsonNode mappedJson2 = null;
         try {
-            mappedJson1 = mapper.readTree(json1.toString());
-            mappedJson2 = mapper.readTree(json2.toString());
+            JsonNode mappedJson1 = mapper.readTree(json1.toString());
+            JsonNode mappedJson2 = mapper.readTree(json2.toString());
             assertThat(mappedJson1.equals(mappedJson2)).isTrue();
         } catch (JsonProcessingException e) {
             throw new IllegalArgumentException("Wrong value passed to assertion method");

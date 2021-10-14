@@ -52,32 +52,24 @@ public class JsonParamsExtractorTest implements TestDataProvider {
     @ParameterizedTest
     @MethodSource("jsonNotMatchByValueNoStrict")
     public void shouldThrowJSONExceptionWhenJsonNotMatchByValueWithStrictDisabled(String json, String mask) {
-        assertThrows(MappingException.class, () -> {
-            new JsonParamsExtractor(json, mask, false);
-        });
+        assertThrows(MappingException.class, () -> new JsonParamsExtractor(json, mask, false));
     }
 
     @ParameterizedTest
     @MethodSource("jsonAsNull")
     public void shouldThrowIllegalArgumentExceptionForNullJsonValue(String json, String mask) {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new JsonParamsExtractor(json, mask, true);
-        });
+        assertThrows(IllegalArgumentException.class, () -> new JsonParamsExtractor(json, mask, true));
     }
 
     @ParameterizedTest
     @MethodSource("illegalJsonPair")
     public void shouldThrowJSONExceptionWhenIllegalJson(String json, String mask) {
-        assertThrows(JSONException.class, () -> {
-            new JsonParamsExtractor(json, mask, true);
-        });
+        assertThrows(JSONException.class, () -> new JsonParamsExtractor(json, mask, true));
     }
 
     @ParameterizedTest
     @MethodSource("maskJsonThrowingMappingException")
     public void shouldThrowMappingExceptionWhenJsonDoesNotMatchMask(String json, String mask, boolean strict) {
-        assertThrows(MappingException.class, () -> {
-            new JsonParamsExtractor(json, mask, strict);
-        });
+        assertThrows(MappingException.class, () -> new JsonParamsExtractor(json, mask, strict));
     }
 }
