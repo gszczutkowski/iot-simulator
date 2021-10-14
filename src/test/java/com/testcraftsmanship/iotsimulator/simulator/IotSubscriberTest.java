@@ -4,6 +4,7 @@ import com.testcraftsmanship.iotsimulator.base.BaseAwsTest;
 import com.testcraftsmanship.iotsimulator.iottype.subscriber.IotSubscriber;
 import com.testcraftsmanship.iotsimulator.utils.SubscriberTestDataProvider;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -14,6 +15,7 @@ import java.util.concurrent.TimeoutException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Tag("aws")
 @Execution(ExecutionMode.CONCURRENT)
 public class IotSubscriberTest extends BaseAwsTest implements SubscriberTestDataProvider {
     private IotSubscriber subscriber;

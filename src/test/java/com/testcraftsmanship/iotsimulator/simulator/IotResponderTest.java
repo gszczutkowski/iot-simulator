@@ -8,6 +8,9 @@ import com.testcraftsmanship.iotsimulator.utils.ResponderTestDataProvider;
 import lombok.SneakyThrows;
 import org.json.JSONObject;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -15,6 +18,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Tag("aws")
+@Execution(ExecutionMode.CONCURRENT)
 public class IotResponderTest extends BaseAwsTest implements ResponderTestDataProvider {
     private static final int MAX_MQTT_MESSAGE_PROCESSING_TIME = 2;
     private static final String NOT_MATCHING_MESSAGE = "{'uuid': '6ecef02b-bc3a-48df-936a-91091082d025', 'info': [21, 33, 17]}";
