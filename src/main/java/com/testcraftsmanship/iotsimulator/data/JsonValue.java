@@ -4,8 +4,8 @@ import lombok.Getter;
 
 @Getter
 public class JsonValue {
-    private JsonValueType type;
-    private String value;
+    private final JsonValueType type;
+    private final String value;
 
     public JsonValue(JsonValueType type, String value) {
         if (isNotCorrectValueForType(type, value)) {

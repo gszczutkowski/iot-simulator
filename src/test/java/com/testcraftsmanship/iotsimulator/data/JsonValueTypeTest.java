@@ -23,16 +23,12 @@ public class JsonValueTypeTest {
     @ParameterizedTest
     @MethodSource("illegalJsonParameterValues")
     public void exceptionShouldBeThrownInJsonValueTypeWhenParsingUnknownObject(Object jsonValue) {
-        assertThrows(IllegalArgumentException.class, () -> {
-            JsonValueType.parseJsonValueType(jsonValue);
-        });
+        assertThrows(IllegalArgumentException.class, () -> JsonValueType.parseJsonValueType(jsonValue));
     }
 
     @Test
     public void exceptionShouldBeThrownInJsonValueTypeWhenNullPassed() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            JsonValueType.parseJsonValueType(null);
-        });
+        assertThrows(IllegalArgumentException.class, () -> JsonValueType.parseJsonValueType(null));
     }
 
     static Stream<Arguments> jsonParameterValues() {

@@ -11,8 +11,6 @@ public class JsonStructureValidatorTest implements TestDataProvider {
     @ParameterizedTest
     @MethodSource("illegalJsoStructure")
     public void shouldThrowIllegalArgumentExceptionForNullJsonValue(String json) {
-        assertThrows(JSONException.class, () -> {
-            JsonStructureValidator.checkIfJsonHasCorrectStructure(json);
-        });
+        assertThrows(JSONException.class, () -> JsonStructureValidator.checkIfJsonHasCorrectStructure(json));
     }
 }
