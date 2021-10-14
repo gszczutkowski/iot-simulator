@@ -1,7 +1,7 @@
 package com.testcraftsmanship.iotsimulator.data;
 
-import com.testcraftsmanship.iotsimulator.utils.TestDataProvider;
 import com.testcraftsmanship.iotsimulator.exception.MappingException;
+import com.testcraftsmanship.iotsimulator.utils.TestDataProvider;
 import org.json.JSONException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -11,7 +11,6 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
 
 public class JsonParamsExtractorTest implements TestDataProvider {
     @ParameterizedTest

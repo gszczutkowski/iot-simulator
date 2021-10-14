@@ -7,7 +7,10 @@ import com.testcraftsmanship.iotsimulator.iottype.publisher.IotPublisher;
 import com.testcraftsmanship.iotsimulator.utils.PublisherTestDataProvider;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -17,6 +20,8 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Tag("aws")
+@Execution(ExecutionMode.CONCURRENT)
 public class IotPublisherTest extends BaseAwsTest implements PublisherTestDataProvider {
     private static final int MAX_MQTT_MESSAGE_PROCESSING_TIME = 2;
     private IotPublisher publisher;

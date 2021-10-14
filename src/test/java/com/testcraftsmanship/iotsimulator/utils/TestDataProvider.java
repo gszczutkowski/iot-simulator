@@ -250,7 +250,6 @@ public interface TestDataProvider {
                 Arguments.of("{'id': 10, 'name': 'Jon'}", "{'id': 10, 'name': '{param}'}", true),
                 Arguments.of("{'id': 10, 'name': 'Jon'}", "{'id': -10, 'name': '{param}'}", false),
                 Arguments.of("{'id': [10, 14], 'name': 'Jon'}", "{'id': ['{param1}', '{param2}'], 'name': 'Jon'}", true),
-                Arguments.of("{'id': [10, 14], 'name': 'Jon'}", "{'id': ['{param1}'], 'name': 'Jon'}", true),
                 Arguments.of("{'id': [10, 14], 'name': 'Jon'}", "{'id': ['{param1}', '{param2}']}", true),
                 Arguments.of("{\n"
                                 + "'id':10,\n"
