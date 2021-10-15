@@ -10,14 +10,25 @@ import static com.testcraftsmanship.iotsimulator.constant.ParserConstants.paramR
 import static com.testcraftsmanship.iotsimulator.constant.ParserConstants.paramWith;
 import static com.testcraftsmanship.iotsimulator.data.JsonStructureValidator.checkIfJsonHasCorrectStructure;
 
+/**
+ * Class responsible for updating parameters in json with given values.
+ *
+ * @author Grzegorz Szczutkowski
+ * @author www.testcraftsmanship.com
+ * @version 1.0
+ * @since 1.0
+ */
 @Slf4j
 public class JsonParamsUpdater {
     private final String jsonMessage;
     private final Map<String, String> paramsWithValues;
 
     /**
-     * Construct an object with JSON that should be filled in with params from the map
-     * @param jsonMessage containing parameters that will be replaced with values from map
+     * Construct an object with JSON that will be filled in with params from the map. When as an jsonMessage we
+     * pass {"id": "{idParam}", "name": "{nameParam}": "location":"PL"} in paramsWithValues with pass map with key/values
+     * idParam:1, nameParam:"Tom" then in created object we will be having given json {"id": 1, "name": "Tom": "location":"PL"}.
+     *
+     * @param jsonMessage      containing parameters that will be replaced with values from map
      * @param paramsWithValues to be filled in the JSON
      */
     public JsonParamsUpdater(String jsonMessage, Map<String, String> paramsWithValues) {
@@ -30,7 +41,8 @@ public class JsonParamsUpdater {
     }
 
     /**
-     * Make a JSONObject from JSON text in which parameters are replaced with the values
+     * Make a JSONObject from JSON text in which parameters are replaced with the values given in the constructor.
+     *
      * @return JSON with parameters replaced with values
      * @throws MappingException when mapping not possible
      */
