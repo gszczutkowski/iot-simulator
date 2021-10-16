@@ -20,11 +20,6 @@ import static com.testcraftsmanship.iotsimulator.data.JsonStructureValidator.che
 
 /**
  * Class responsible for comparing two JSONs with different rules.
- *
- * @author Grzegorz Szczutkowski
- * @author www.testcraftsmanship.com
- * @version 1.0
- * @since 1.0
  */
 @Slf4j
 public final class JsonMessageMatcher {

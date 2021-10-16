@@ -21,6 +21,9 @@ import java.util.stream.Collectors;
 
 import static com.testcraftsmanship.iotsimulator.constant.GeneralConstants.RESPONDER_POOLING_TIME_IN_MILLIS;
 
+/**
+ * Class responsible for responding from one MQTT topic to another with previously defined message
+ */
 @Slf4j
 public class IotResponder extends IotDevice<IotResponder> {
     private final IotResponderTopic iotResponderTopic;
@@ -38,6 +41,11 @@ public class IotResponder extends IotDevice<IotResponder> {
         this.settings = settings;
     }
 
+    /**
+     * Runs IotResponder which means that starts connection and subscribes to the given topic.
+     *
+     * @return Iot Responder object which just has been started
+     */
     @Override
     public IotResponder start() {
         super.start();
@@ -53,10 +61,12 @@ public class IotResponder extends IotDevice<IotResponder> {
         return getThis();
     }
 
-    public IotResponder stop() {
+    /**
+     * Stops Ioi Responder which means disconnection
+     */
+    public void stop() {
         super.stop();
         started = false;
-        return this;
     }
 
     @Override

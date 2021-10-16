@@ -12,11 +12,6 @@ import static com.testcraftsmanship.iotsimulator.data.JsonStructureValidator.che
 
 /**
  * Class responsible for updating parameters in json with given values.
- *
- * @author Grzegorz Szczutkowski
- * @author www.testcraftsmanship.com
- * @version 1.0
- * @since 1.0
  */
 @Slf4j
 public class JsonParamsUpdater {

@@ -11,17 +11,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static com.testcraftsmanship.iotsimulator.constant.ParserConstants.paramContentRegex;
 import static com.testcraftsmanship.iotsimulator.data.JsonStructureValidator.checkIfJsonHasCorrectStructure;
 import static com.testcraftsmanship.iotsimulator.data.JsonValueType.parseJsonValueType;
-import static com.testcraftsmanship.iotsimulator.constant.ParserConstants.paramContentRegex;
 
 /**
  * Class responsible for extracting parameters values from json according to provided mask.
- *
- * @author Grzegorz Szczutkowski
- * @author www.testcraftsmanship.com
- * @version 1.0
- * @since 1.0
  */
 @Slf4j
 public class JsonParamsExtractor {
@@ -97,7 +92,7 @@ public class JsonParamsExtractor {
             Pattern pattern = Pattern.compile(paramContentRegex());
             Matcher matcher = pattern.matcher(jsonMaskPart.toString());
             if (matcher.find()) {
-                JsonValue jsonMessagePartValue = new JsonValue(parseJsonValueType(jsonMessagePart), jsonMessagePart.toString());
+                JsonValue jsonMessagePartValue = new JsonValue(jsonMessagePart);
                 String keyValue = matcher.group(1);
                 attributesWithValues.put(keyValue, jsonMessagePartValue);
                 return attributesWithValues;

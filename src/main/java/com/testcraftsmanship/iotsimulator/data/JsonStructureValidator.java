@@ -9,11 +9,6 @@ import static com.amazonaws.util.StringUtils.isNullOrEmpty;
 
 /**
  * Class responsible for JSON format validation.
- *
- * @author Grzegorz Szczutkowski
- * @author www.testcraftsmanship.com
- * @version 1.0
- * @since 1.0
  */
 public final class JsonStructureValidator {
     private static final int MIN_JSON_LENGTH = 2;
