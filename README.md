@@ -1,5 +1,5 @@
 # What is iot-simulator
-[![build](https://github.com/gszczutkowski/iot-simulator/actions/workflows/maven-publish.yml/badge.svg)](https://github.com/gszczutkowski/iot-simulator/actions/workflows/maven-publish.yml) [![javadoc](https://img.shields.io/badge/javadoc-brightgreen.svg)](https://testcraftsmanship.com/iotsimulator/docs)
+[![continuous-integration](https://github.com/gszczutkowski/iot-simulator/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/gszczutkowski/iot-simulator/actions/workflows/continuous-integration.yml) [![javadoc](https://img.shields.io/badge/javadoc-brightgreen.svg)](https://testcraftsmanship.com/iotsimulator/docs)
 
 The iot-simulator allows you to mock AWS IoT devices connected to MQTT in your tests. You can easily define behaviors of this virtual device. It can work in three different ways:
   - subscriber connects to MQTT topic and is waiting for receiving previously defined message
