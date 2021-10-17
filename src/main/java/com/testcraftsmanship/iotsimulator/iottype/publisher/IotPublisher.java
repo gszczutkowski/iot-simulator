@@ -21,12 +21,25 @@ public class IotPublisher extends IotDevice<IotPublisher> {
     private final Map<String, List<String>> topicsWithMessages;
     private final int delayInSeconds;
 
+    /**
+     * Instantiating IotPublisher responsible for publishing message/messages to MQTT queue.
+     *
+     * @param iotMqttClient AWSIotMqttClient which will be responsible for publishing messages
+     * @param topicsWithMessages map of topics and assigned to them list of messages to send
+     * @param delayInSeconds delay between every message publication
+     */
     public IotPublisher(AWSIotMqttClient iotMqttClient, Map<String, List<String>> topicsWithMessages, int delayInSeconds) {
         super(iotMqttClient);
         this.topicsWithMessages = topicsWithMessages;
         this.delayInSeconds = delayInSeconds;
     }
 
+    /**
+     * Publish first message from the map of topics with messages. After publishing message is removed so after another
+     * execution next message will be sent.
+     *
+     * @return IotPublisher responsible for publishing messages
+     */
     public IotPublisher publish() {
         Optional<IotMessage> event = popMessageToPublish();
         if (event.isEmpty()) {
@@ -38,6 +51,12 @@ public class IotPublisher extends IotDevice<IotPublisher> {
         return this;
     }
 
+    /**
+     * Publish all messages passed in the constructor to associated topic. There is a delay which was set in constructor
+     * between sending every message. Every message is removed after publication.
+     *
+     * @return IotPublisher responsible for publishing messages
+     */
     public IotPublisher publishAll() {
         startIotSimulatorWhenDisconnected();
         Optional<IotMessage> event = popMessageToPublish();

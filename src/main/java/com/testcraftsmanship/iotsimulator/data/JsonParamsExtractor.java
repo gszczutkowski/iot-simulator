@@ -25,8 +25,8 @@ public class JsonParamsExtractor {
 
     /**
      * Construct an object which extracts parameters from jsonMessage based on the JSON mask. When as an jsonMessage we
-     * pass {"id": 1, "name": "Tom": "location":"PL"} and as a jsonMask {"id": "{idParam}", "name": "{nameParam}": "location":"PL"}
-     * then in created object we will be having map with key/values idParam:1, nameParam:"Tom".
+     * pass {"id": 1, "name": "Tom": "location":"PL"} and as a jsonMask {"id": "{idParam}", "name": "{nameParam}",
+     * "location":"PL"} then in created object we will be having map with key/values idParam:1, nameParam:"Tom".
      *
      * @param jsonMessage JSON from where values of the parameters to be extracted
      * @param jsonMask    JSON from where keys of the parameters to be extracted

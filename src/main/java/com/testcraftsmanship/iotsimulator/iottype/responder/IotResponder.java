@@ -32,6 +32,14 @@ public class IotResponder extends IotDevice<IotResponder> {
     private final Map<String, List<String>> responseTopicsWithMessages;
     private boolean started = false;
 
+    /**
+     * Instantiating IotResponder responsible for responding to message received on subscribed topic.
+     *
+     * @param iotMqttClient AWSIotMqttClient which will be responsible for publishing messages
+     * @param responseTopicsWithMessages map of topics and assigned to them list of messages to send in the response
+     * @param settings settings of the responder: delay of response after getting the message, if exact subsciption
+     *                 message is required. Matching type is omitted.
+     */
     public IotResponder(AWSIotMqttClient iotMqttClient, SubscriptionData subscriptionData,
                         Map<String, List<String>> responseTopicsWithMessages, IotDeviceSettings settings) {
         super(iotMqttClient);

@@ -21,6 +21,15 @@ import static com.testcraftsmanship.iotsimulator.constant.GeneralConstants.SUBSC
 public class IotSubscriber extends IotDevice<IotSubscriber> {
     private final SubscribedTopic subscribedTopic;
 
+    /**
+     * Instantiating IotSubscriber responsible for waiting for messages on given topic and validation whether message
+     * is as expected.
+     *
+     * @param iotMqttClient AWSIotMqttClient which will be responsible for publishing messages
+     * @param subscriptionData containing subscription topic and expected message/mask
+     * @param settings settings of the responder: if exact subscription message is required, whether all messages should
+     *                 match expected or any, delay of response is omitted
+     */
     public IotSubscriber(AWSIotMqttClient iotMqttClient, SubscriptionData subscriptionData, IotDeviceSettings settings) {
         super(iotMqttClient);
         this.subscribedTopic = new SubscribedTopic(subscriptionData, settings);
