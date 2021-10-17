@@ -12,6 +12,12 @@ public abstract class IotDevice<T extends IotDevice> {
     @Getter
     private final AWSIotMqttClient iotMqttClient;
 
+
+    /**
+     * Runs IotDevice which means that starts connection.
+     *
+     * @return object extended from IoT device which just has been started
+     */
     public T start() {
         try {
             iotMqttClient.connect();
@@ -22,14 +28,16 @@ public abstract class IotDevice<T extends IotDevice> {
         return getThis();
     }
 
-    public T stop() {
+    /**
+     * Stops Iot Responder which means disconnection
+     */
+    public void stop() {
         try {
             iotMqttClient.disconnect();
             log.debug("IoT simulator stopped");
         } catch (AWSIotException e) {
             log.error("Exception thrown while stopping IoT simulator");
         }
-        return getThis();
     }
 
     protected abstract T getThis();

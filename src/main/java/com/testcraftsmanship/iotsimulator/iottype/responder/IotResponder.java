@@ -21,6 +21,9 @@ import java.util.stream.Collectors;
 
 import static com.testcraftsmanship.iotsimulator.constant.GeneralConstants.RESPONDER_POOLING_TIME_IN_MILLIS;
 
+/**
+ * Class responsible for responding from one MQTT topic to another with previously defined message
+ */
 @Slf4j
 public class IotResponder extends IotDevice<IotResponder> {
     private final IotResponderTopic iotResponderTopic;
@@ -29,6 +32,14 @@ public class IotResponder extends IotDevice<IotResponder> {
     private final Map<String, List<String>> responseTopicsWithMessages;
     private boolean started = false;
 
+    /**
+     * Instantiating IotResponder responsible for responding to message received on subscribed topic.
+     *
+     * @param iotMqttClient AWSIotMqttClient which will be responsible for publishing messages
+     * @param responseTopicsWithMessages map of topics and assigned to them list of messages to send in the response
+     * @param settings settings of the responder: delay of response after getting the message, if exact subsciption
+     *                 message is required. Matching type is omitted.
+     */
     public IotResponder(AWSIotMqttClient iotMqttClient, SubscriptionData subscriptionData,
                         Map<String, List<String>> responseTopicsWithMessages, IotDeviceSettings settings) {
         super(iotMqttClient);
@@ -38,6 +49,11 @@ public class IotResponder extends IotDevice<IotResponder> {
         this.settings = settings;
     }
 
+    /**
+     * Runs IotResponder which means that starts connection and subscribes to the given topic.
+     *
+     * @return Iot Responder object which just has been started
+     */
     @Override
     public IotResponder start() {
         super.start();
@@ -53,10 +69,12 @@ public class IotResponder extends IotDevice<IotResponder> {
         return getThis();
     }
 
-    public IotResponder stop() {
+    /**
+     * Stops Ioi Responder which means disconnection
+     */
+    public void stop() {
         super.stop();
         started = false;
-        return this;
     }
 
     @Override

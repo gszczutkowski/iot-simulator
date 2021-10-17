@@ -18,6 +18,9 @@ import java.util.regex.Pattern;
 import static com.testcraftsmanship.iotsimulator.constant.ParserConstants.paramContentRegex;
 import static com.testcraftsmanship.iotsimulator.data.JsonStructureValidator.checkIfJsonHasCorrectStructure;
 
+/**
+ * Class responsible for comparing two JSONs with different rules.
+ */
 @Slf4j
 public final class JsonMessageMatcher {
 
@@ -29,9 +32,10 @@ public final class JsonMessageMatcher {
      * match then to return true value for that key should be regular expression matching value from second JSON.
      * If strict is true then both JSONs have to have exactly the same arguments if strict is set to false then
      * arguments that are only in one JSON are excluded from comparison.
-     * @param actual JSON as string
+     *
+     * @param actual   JSON as string
      * @param expected JSON as string
-     * @param strict defines whether include to matching keys that are only in one JSON
+     * @param strict   defines whether include to matching keys that are only in one JSON
      * @return result of the matching
      */
     public static boolean jsonMatch(String actual, String expected, boolean strict) {
@@ -42,9 +46,10 @@ public final class JsonMessageMatcher {
     /**
      * Returns true when both JSONs have exactly the same keys and strict is true. When strict is false then
      * one JSON have to contain all keys from the other JSON.
-     * @param actual JSON as string
+     *
+     * @param actual   JSON as string
      * @param expected JSON as string
-     * @param strict defines whether include to matching keys that are only in one JSON
+     * @param strict   defines whether include to matching keys that are only in one JSON
      * @return result of the matching
      */
     public static boolean jsonStructureMatch(String actual, String expected, boolean strict) {
@@ -136,12 +141,11 @@ public final class JsonMessageMatcher {
             }
             String s1 = getValueAsString(o1);
             String s2 = getValueAsString(o2);
-            if (s1.matches(paramContentRegex())) {
+            if (s1.matches(paramContentRegex()) || s2.matches(paramContentRegex())) {
                 return 0;
-            } else if (s2.matches(paramContentRegex())) {
-                return 0;
+            } else {
+                return 1;
             }
-            return 1;
         }
 
         private String getValueAsString(JsonNode node) {

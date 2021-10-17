@@ -11,20 +11,26 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static com.testcraftsmanship.iotsimulator.constant.ParserConstants.paramContentRegex;
 import static com.testcraftsmanship.iotsimulator.data.JsonStructureValidator.checkIfJsonHasCorrectStructure;
 import static com.testcraftsmanship.iotsimulator.data.JsonValueType.parseJsonValueType;
-import static com.testcraftsmanship.iotsimulator.constant.ParserConstants.paramContentRegex;
 
+/**
+ * Class responsible for extracting parameters values from json according to provided mask.
+ */
 @Slf4j
 public class JsonParamsExtractor {
     private final Map<String, JsonValue> jsonParamsWithValues;
     private final boolean strictMatching;
 
     /**
-     * Construct an object which extracts parameters from jsonMessage based on the jsonMask
-     * @param jsonMessage from where values of the parameters to be extracted
-     * @param jsonMask from where keys of the parameters to be extracted
-     * @param strict whether both JSONs should have the same keys
+     * Construct an object which extracts parameters from jsonMessage based on the JSON mask. When as an jsonMessage we
+     * pass {"id": 1, "name": "Tom": "location":"PL"} and as a jsonMask {"id": "{idParam}", "name": "{nameParam}",
+     * "location":"PL"} then in created object we will be having map with key/values idParam:1, nameParam:"Tom".
+     *
+     * @param jsonMessage JSON from where values of the parameters to be extracted
+     * @param jsonMask    JSON from where keys of the parameters to be extracted
+     * @param strict      mark both JSONs should have the same keys
      * @throws MappingException when mapping not possible
      */
     public JsonParamsExtractor(String jsonMessage, String jsonMask, boolean strict)
@@ -43,6 +49,7 @@ public class JsonParamsExtractor {
 
     /**
      * Returns the map of parameters with values from JSON passed in constructor and based on the mask from constructor.
+     *
      * @return map of parameters with values extracted from JSON
      */
     public Map<String, String> getParamsWithValues() {
@@ -85,7 +92,7 @@ public class JsonParamsExtractor {
             Pattern pattern = Pattern.compile(paramContentRegex());
             Matcher matcher = pattern.matcher(jsonMaskPart.toString());
             if (matcher.find()) {
-                JsonValue jsonMessagePartValue = new JsonValue(parseJsonValueType(jsonMessagePart), jsonMessagePart.toString());
+                JsonValue jsonMessagePartValue = new JsonValue(jsonMessagePart);
                 String keyValue = matcher.group(1);
                 attributesWithValues.put(keyValue, jsonMessagePartValue);
                 return attributesWithValues;
